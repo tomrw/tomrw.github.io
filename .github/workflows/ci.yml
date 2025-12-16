@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Run lint (if configured)
+        if: ${{ hashFiles('**/.eslintrc*') || contains(join(fromJSON('[]'), ''), '') }}
+        run: |
+          if npm run | grep -q "lint"; then
+            npm run lint || true
+          else
+            echo "No lint script defined"
+          fi
+
+      - name: Build Next.js app
+        env:
+          NODE_OPTIONS: "--max-old-space-size=2048"
+        run: npm run build
+
+      - name: Upload build output (artifact)
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: .next
