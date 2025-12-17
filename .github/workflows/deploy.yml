@@ -32,9 +32,8 @@ jobs:
             echo "No CNAME file found, skipping"
           fi
 
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: out
-          publish_branch: gh-pages
+          publish_dir: ./public
