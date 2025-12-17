@@ -1,18 +1,29 @@
 export default function RecipesPage() {
   return (
-    <main style={{padding: '24px', maxWidth: 900, margin: '0 auto'}}>
+    <main style={{ padding: '24px', maxWidth: 900, margin: '0 auto' }}>
       <h1>Recipes</h1>
       <p>Welcome — this is a starter page for recipes. Add your recipes here.</p>
 
-      <section style={{marginTop: 24}}>
-        <article style={{padding: 12, borderRadius: 8, border: '1px solid rgba(255,255,255,0.04)', marginBottom: 16}}>
+      <section style={{ marginTop: 24 }}>
+        <article
+          style={{
+            padding: 12,
+            borderRadius: 8,
+            border: '1px solid rgba(255,255,255,0.04)',
+            marginBottom: 16,
+          }}
+        >
           <h2>Sample Recipe</h2>
           <p>Ingredients and instructions go here.</p>
         </article>
-        
-        <article style={{padding: 12, borderRadius: 8, border: '1px solid rgba(255,255,255,0.04)'}}>
+
+        <article
+          style={{ padding: 12, borderRadius: 8, border: '1px solid rgba(255,255,255,0.04)' }}
+        >
           <h2>Chocolate Chip Cookies</h2>
-          <p><strong>Ingredients:</strong></p>
+          <p>
+            <strong>Ingredients:</strong>
+          </p>
           <ul>
             <li>2 cups all-purpose flour</li>
             <li>1 cup butter, softened</li>
@@ -24,7 +35,9 @@ export default function RecipesPage() {
             <li>1 tsp salt</li>
             <li>2 cups chocolate chips</li>
           </ul>
-          <p><strong>Instructions:</strong></p>
+          <p>
+            <strong>Instructions:</strong>
+          </p>
           <ol>
             <li>Preheat oven to 375°F (190°C)</li>
             <li>Cream together butter and sugars until fluffy</li>

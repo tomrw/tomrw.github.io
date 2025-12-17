@@ -1,8 +1,8 @@
 .nav {
   width: 100%;
-  background: rgba(255,255,255,0.02);
+  background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(6px);
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
 
 .list {
@@ -35,7 +35,7 @@
 .link:active,
 .link:focus,
 .link:hover {
-  background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 @media (min-width: 640px) {
