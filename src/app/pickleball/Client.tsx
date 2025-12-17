@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Section from './Section';
 import { Players } from './Players';
+import CourtCanvas from './CourtCanvas';
 
 export default function PickleballClient() {
   const [courts, setCourts] = useState<number>(6);
@@ -41,6 +42,8 @@ export default function PickleballClient() {
       <Section title="Players" description="Add and remove players">
         <Players />
       </Section>
+
+      <CourtCanvas courts={courts} width={820} height={480} />
     </main>
   );
 }
