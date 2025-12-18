@@ -1,49 +1,39 @@
 'use client';
 
 import { useState } from 'react';
-import Section from './Section';
-import { Players } from './Players';
 import CourtCanvas from './CourtCanvas';
+import ConfigPanel from './ConfigPanel';
 
 export default function PickleballClient() {
   const [courts, setCourts] = useState<number>(6);
+  const [panelOpen, setPanelOpen] = useState<boolean>(false);
 
   return (
     <main style={{ padding: 24, maxWidth: 900, margin: '0 auto' }}>
       <h1>Pickleball</h1>
 
-      <Section title="Config" description="Configure courts and settings">
-        <label
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 8,
-            maxWidth: 320,
-          }}
-        >
-          <label htmlFor="number-of-courts" style={{ fontWeight: 600 }}>
-            Number of courts
-          </label>
-          <select
-            value={courts}
-            onChange={(e) => setCourts(Number(e.target.value))}
-            id="number-of-courts"
-            style={{ padding: '8px 10px', borderRadius: 8 }}
-          >
-            {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-              <option key={n} value={n}>
-                {n}
-              </option>
-            ))}
-          </select>
-        </label>
-      </Section>
-
-      <Section title="Players" description="Add and remove players">
-        <Players />
-      </Section>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginTop: 12,
+        }}
+      >
+        <div />
+        <button onClick={() => setPanelOpen(true)} style={{ padding: '8px 12px', borderRadius: 8 }}>
+          Open Config
+        </button>
+      </div>
 
       <CourtCanvas courts={courts} width={820} height={480} />
+
+      <ConfigPanel
+        open={panelOpen}
+        onClose={() => setPanelOpen(false)}
+        courts={courts}
+        setCourts={setCourts}
+      />
     </main>
   );
 }

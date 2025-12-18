@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 type Props = {
   courts: number;
@@ -21,7 +21,7 @@ export default function CourtCanvas({ courts, width = 800, height = 600 }: Props
     canvas.style.width = `${width}px`;
     canvas.style.height = `${height}px`;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
     ctx.scale(dpr, dpr);
 
@@ -37,8 +37,8 @@ export default function CourtCanvas({ courts, width = 800, height = 600 }: Props
     const cellH = (height - padding * 2 - gap * (rows - 1)) / rows;
 
     ctx.font = "14px system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial";
-    ctx.fillStyle = "#fff";
-    ctx.strokeStyle = "rgba(255,255,255,0.6)";
+    ctx.fillStyle = '#fff';
+    ctx.strokeStyle = 'rgba(255,255,255,0.6)';
     ctx.lineWidth = 1;
 
     for (let i = 0; i < courts; i++) {
@@ -48,13 +48,13 @@ export default function CourtCanvas({ courts, width = 800, height = 600 }: Props
       const y = padding + row * (cellH + gap);
 
       // Court rectangle
-      ctx.fillStyle = "rgba(0,0,0,0.15)";
+      ctx.fillStyle = 'rgba(0,0,0,0.15)';
       ctx.fillRect(x, y, cellW, cellH);
-      ctx.strokeStyle = "rgba(255,255,255,0.12)";
+      ctx.strokeStyle = 'rgba(255,255,255,0.12)';
       ctx.strokeRect(x + 0.5, y + 0.5, cellW - 1, cellH - 1);
 
       // Court label
-      ctx.fillStyle = "#fff";
+      ctx.fillStyle = '#fff';
       ctx.fillText(`Court ${i + 1}`, x + 8, y + 20);
 
       // draw four player name placeholders at the corners
@@ -73,16 +73,16 @@ export default function CourtCanvas({ courts, width = 800, height = 600 }: Props
       ];
 
       ctx.font = "12px system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial";
-      ctx.fillStyle = "rgba(255,255,255,0.9)";
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
       positions.forEach((pos, idx) => {
         // placeholder box
-        ctx.fillStyle = "rgba(255,255,255,0.04)";
+        ctx.fillStyle = 'rgba(255,255,255,0.04)';
         ctx.fillRect(pos.nx, pos.ny, nameBoxW, nameBoxH);
-        ctx.strokeStyle = "rgba(255,255,255,0.08)";
+        ctx.strokeStyle = 'rgba(255,255,255,0.08)';
         ctx.strokeRect(pos.nx + 0.5, pos.ny + 0.5, nameBoxW - 1, nameBoxH - 1);
 
         // placeholder name
-        ctx.fillStyle = "rgba(255,255,255,0.9)";
+        ctx.fillStyle = 'rgba(255,255,255,0.9)';
         ctx.fillText(`Player ${idx + 1}`, pos.nx + 6, pos.ny + 14);
       });
     }
