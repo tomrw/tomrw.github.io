@@ -1,6 +1,6 @@
 'use client';
 
-import { CSSProperties, useEffect, useRef, useState } from 'react';
+import { CSSProperties, useEffect, useRef } from 'react';
 import FocusLock from 'react-focus-lock';
 
 type Props = {

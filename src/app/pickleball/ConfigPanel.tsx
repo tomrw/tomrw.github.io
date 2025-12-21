@@ -2,41 +2,61 @@
 
 import { Players } from './Players';
 import SidePanel from '../../ds/side-panel/SidePanel';
+import { FormProvider, useForm, useFormContext } from 'react-hook-form';
+import Courts from './Courts';
+import Button from '@/ds/Button';
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  courts: number;
-  setCourts: (n: number) => void;
+  onUpdateConfig: (data: ConfigForm) => void;
 };
 
-export default function ConfigPanel({ open, onClose, courts, setCourts }: Props) {
-  if (!open) return null;
+export type ConfigForm = {
+  players: { id: number; name: string }[];
+  courts: number;
+};
+
+export default function ConfigPanel({ open, onClose, onUpdateConfig }: Props) {
+  const form = useForm<ConfigForm>({
+    defaultValues: {
+      players: [
+        { id: 1, name: 'Alice' },
+        { id: 2, name: 'Bob' },
+      ],
+      courts: 6,
+    },
+  });
 
   return (
-    <SidePanel open={open} onClose={onClose} width={360} title="Config">
+    <SidePanel open={open} onClose={onClose} title="Config">
+      <FormProvider {...form}>
+        <FormContent onUpdateConfig={onUpdateConfig} />
+      </FormProvider>
+    </SidePanel>
+  );
+}
+
+const FormContent = ({ onUpdateConfig }: { onUpdateConfig: (data: ConfigForm) => void }) => {
+  const form = useFormContext<ConfigForm>();
+  const onSubmit = form.handleSubmit((data) => {
+    onUpdateConfig(data);
+  });
+
+  return (
+    <form onSubmit={onSubmit}>
       <section style={{ marginTop: 18 }}>
-        <label style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <span style={{ fontWeight: 600 }}>Number of courts</span>
-          <select
-            value={courts}
-            onChange={(e) => setCourts(Number(e.target.value))}
-            aria-label="Number of courts"
-            style={{ padding: '8px 10px', borderRadius: 8, width: '100%' }}
-          >
-            {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-              <option key={n} value={n}>
-                {n}
-              </option>
-            ))}
-          </select>
-        </label>
+        <Courts />
       </section>
 
       <section style={{ marginTop: 18 }}>
         <h3 style={{ marginTop: 0 }}>Players</h3>
         <Players />
       </section>
-    </SidePanel>
+
+      <Button full type="submit">
+        Save
+      </Button>
+    </form>
   );
-}
+};
