@@ -2,39 +2,56 @@
 
 import { Players } from './Players';
 import SidePanel from '../../ds/SidePanel/SidePanel';
-import { useFormContext } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import Courts from './Courts';
 import Button from '@/ds/Button';
 import { ConfigForm } from './types';
+import { usePickleballContext } from './PickleballContext';
+import { DEFAULT_COURT_COUNT } from './constants';
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  onUpdateConfig: (data: ConfigForm) => void;
 };
 
-export default function ConfigPanel({ open, onClose, onUpdateConfig }: Props) {
-  const form = useFormContext<ConfigForm>();
+const PLAYERS = [
+  { id: 1, name: 'Alice' },
+  { id: 2, name: 'Bob' },
+];
+
+export default function ConfigPanel({ open, onClose }: Props) {
+  const { updateConfig } = usePickleballContext();
+
+  const form = useForm<ConfigForm>({
+    defaultValues: {
+      players: PLAYERS,
+      courts: DEFAULT_COURT_COUNT,
+    },
+  });
+
   const onSubmit = form.handleSubmit((data) => {
-    onUpdateConfig(data);
+    updateConfig(data);
+    onClose();
   });
 
   return (
-    <SidePanel open={open} onClose={onClose} title="Config">
-      <form onSubmit={onSubmit}>
-        <section style={{ marginTop: 18 }}>
-          <Courts />
-        </section>
+    <FormProvider {...form}>
+      <SidePanel open={open} onClose={onClose} title="Config">
+        <form onSubmit={onSubmit}>
+          <section style={{ marginTop: 18 }}>
+            <Courts />
+          </section>
 
-        <section style={{ marginTop: 18 }}>
-          <h3 style={{ marginTop: 0 }}>Players</h3>
-          <Players />
-        </section>
+          <section style={{ marginTop: 18 }}>
+            <h3 style={{ marginTop: 0 }}>Players</h3>
+            <Players />
+          </section>
 
-        <Button full type="submit">
-          Save
-        </Button>
-      </form>
-    </SidePanel>
+          <Button full type="submit">
+            Save
+          </Button>
+        </form>
+      </SidePanel>
+    </FormProvider>
   );
 }
