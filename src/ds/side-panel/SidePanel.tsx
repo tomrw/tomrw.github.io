@@ -76,6 +76,10 @@ export default function SidePanel({
     transition: `transform ${duration}ms ${easing}`,
   };
 
+  if (!open) {
+    return null;
+  }
+
   return (
     <div style={overlayStyle} onClick={onClose} role="dialog" aria-modal="true">
       <div style={panelStyle} onClick={(e) => e.stopPropagation()}>
