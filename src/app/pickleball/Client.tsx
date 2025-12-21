@@ -2,7 +2,10 @@
 
 import { useState } from 'react';
 import CourtCanvas from './CourtCanvas';
-import ConfigPanel, { ConfigForm } from './ConfigPanel';
+import ConfigPanel from './ConfigPanel';
+import PickleballContextProvider from './PickleballContext';
+import Button from '@/ds/Button';
+import { ConfigForm } from './types';
 
 export default function PickleballClient() {
   const [panelOpen, setPanelOpen] = useState<boolean>(false);
@@ -14,27 +17,27 @@ export default function PickleballClient() {
   };
 
   return (
-    <main style={{ padding: 24, maxWidth: 900, margin: '0 auto' }}>
-      <h1>Pickleball</h1>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginTop: 12,
-        }}
-      >
-        <div />
-        <button onClick={() => setPanelOpen(true)} style={{ padding: '8px 12px', borderRadius: 8 }}>
-          Open Config
-        </button>
-      </div>
-      <CourtCanvas courts={courts} width={820} height={480} />
-      <ConfigPanel
-        open={panelOpen}
-        onClose={() => setPanelOpen(false)}
-        onUpdateConfig={handleUpdateConfig}
-      />
-    </main>
+    <PickleballContextProvider>
+      <main style={{ padding: 24, maxWidth: 900, margin: '0 auto' }}>
+        <h1>Pickleball</h1>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginTop: 12,
+          }}
+        >
+          <div />
+          <Button onClick={() => setPanelOpen(true)}>Open Config</Button>
+        </div>
+        <CourtCanvas width={820} height={480} />
+        <ConfigPanel
+          open={panelOpen}
+          onClose={() => setPanelOpen(false)}
+          onUpdateConfig={handleUpdateConfig}
+        />
+      </main>
+    </PickleballContextProvider>
   );
 }

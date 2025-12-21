@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { ConfigForm } from './ConfigPanel';
+import { ConfigForm } from './types';
 import Button from '@/ds/Button';
 
 export const Players = () => {

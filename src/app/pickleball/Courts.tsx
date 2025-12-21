@@ -1,6 +1,6 @@
 import Dropdown from '@/ds/dropdown/Dropdown';
 import { useController, useFormContext, useWatch } from 'react-hook-form';
-import { ConfigForm } from './ConfigPanel';
+import { ConfigForm } from './types';
 
 const OPTIONS = Array.from({ length: 10 }, (_, i) => i + 1).map((n) => ({
   value: n,

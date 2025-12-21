@@ -1,14 +1,17 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
+import { ConfigForm } from './types';
 
 type Props = {
-  courts: number;
   width?: number;
   height?: number;
 };
 
-export default function CourtCanvas({ courts, width = 800, height = 600 }: Props) {
+export default function CourtCanvas({ width = 800, height = 600 }: Props) {
+  const { control } = useFormContext<ConfigForm>();
+  const courts = useWatch({ control, name: 'courts' });
   const ref = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
