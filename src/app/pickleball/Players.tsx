@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { ConfigForm } from './types';
 import Button from '@/ds/Button';
+import Flex from '@/ds/Flex';
 
 export const Players = () => {
   const [newName, setNewName] = useState<string>('');
@@ -27,41 +28,39 @@ export const Players = () => {
 
   return (
     <>
-      <input
-        value={newName}
-        onChange={(e) => setNewName(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-            onAddPlayer();
-          }
-        }}
-        placeholder="Add player name"
-        aria-label="Player name"
-        style={{ flex: 1, padding: '8px 10px', borderRadius: 8 }}
-      />
-      <Button type="button" onClick={onAddPlayer} style={{ padding: '8px 12px', borderRadius: 8 }}>
-        Add
-      </Button>
+      <Flex justifyContent="space-between" gap={10}>
+        <input
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              onAddPlayer();
+            }
+          }}
+          placeholder="Add player name"
+          aria-label="Player name"
+          style={{ flex: 1, padding: '8px 10px', borderRadius: 8 }}
+        />
+        <Button
+          type="button"
+          onClick={onAddPlayer}
+          style={{ padding: '8px 12px', borderRadius: 8 }}
+        >
+          Add
+        </Button>
+      </Flex>
       {error && <div style={{ color: '#e11', marginBottom: 12 }}>{error}</div>}
 
-      <ul>
+      <ul style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBlockEnd: 10 }}>
         {fields.map((pl) => (
-          <li key={pl.id} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-            <span>{pl.name}</span>
-            <Button
-              type="button"
-              onClick={() => remove(pl.id)}
-              aria-label={`Delete ${pl.name}`}
-              className="players-delete"
-              style={{
-                marginLeft: 'auto',
-                padding: '6px 8px',
-                borderRadius: 6,
-              }}
-            >
-              Delete
-            </Button>
+          <li key={pl.id}>
+            <Flex justifyContent="space-between" gap={10}>
+              <span>{pl.name}</span>
+              <Button onClick={() => remove(pl.id)} aria-label={`Delete ${pl.name}`}>
+                Delete
+              </Button>
+            </Flex>
           </li>
         ))}
       </ul>
