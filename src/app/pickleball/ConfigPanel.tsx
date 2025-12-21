@@ -1,7 +1,7 @@
 'use client';
 
 import { Players } from './Players';
-import SidePanel from '../../ds/side-panel/SidePanel';
+import SidePanel from '../../ds/SidePanel/SidePanel';
 import { useFormContext } from 'react-hook-form';
 import Courts from './Courts';
 import Button from '@/ds/Button';

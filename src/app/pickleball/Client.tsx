@@ -6,6 +6,7 @@ import ConfigPanel from './ConfigPanel';
 import PickleballContextProvider from './PickleballContext';
 import Button from '@/ds/Button';
 import { ConfigForm } from './types';
+import Flex from '@/ds/Flex';
 
 export default function PickleballClient() {
   const [panelOpen, setPanelOpen] = useState<boolean>(false);
@@ -19,18 +20,10 @@ export default function PickleballClient() {
   return (
     <PickleballContextProvider>
       <main style={{ padding: 24, maxWidth: 900, margin: '0 auto' }}>
-        <h1>Pickleball</h1>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            marginTop: 12,
-          }}
-        >
-          <div />
+        <Flex justifyContent="space-between">
+          <h1>Pickleball</h1>
           <Button onClick={() => setPanelOpen(true)}>Open Config</Button>
-        </div>
+        </Flex>
         <CourtCanvas width={820} height={480} />
         <ConfigPanel
           open={panelOpen}

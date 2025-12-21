@@ -1,4 +1,4 @@
-import Dropdown from '@/ds/dropdown/Dropdown';
+import Dropdown from '@/ds/dropdown';
 import { useController, useFormContext, useWatch } from 'react-hook-form';
 import { ConfigForm } from './types';
 
