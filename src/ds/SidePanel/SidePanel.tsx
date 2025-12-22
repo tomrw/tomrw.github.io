@@ -65,42 +65,43 @@ export default function SidePanel({
 
   const overlayStyle: CSSProperties = {
     ...overlayBase,
-    background: 'rgba(0,0,0,0.32)',
-    transition: `background ${duration}ms ${easing}`,
+    background: open ? 'rgba(0,0,0,0.32)' : 'rgba(0,0,0,0)',
+    pointerEvents: open ? 'auto' : 'none',
+    transition: `background ${duration}ms ${easing}, pointer-events ${duration}ms ${easing}`,
   };
 
   const panelStyle: CSSProperties = {
     ...panelStyleBase,
     width,
-    transform: 'translateX(0)',
+    transform: open ? 'translateX(0)' : 'translateX(100%)',
     transition: `transform ${duration}ms ${easing}`,
   };
 
-  if (!open) {
-    return null;
-  }
-
   return (
-    <div style={overlayStyle} onClick={onClose} role="dialog" aria-modal="true">
+    <div style={overlayStyle} onClick={onClose} role="dialog" aria-modal={open}>
       <div style={panelStyle} onClick={(e) => e.stopPropagation()}>
-        <FocusLock returnFocus>
-          <div ref={panelRef} tabIndex={-1}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h2 id="sidepanel-title" style={{ margin: 0 }}>
-                {title ?? ''}
-              </h2>
-              <button
-                onClick={onClose}
-                aria-label="Close panel"
-                style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: 18 }}
+        {open && (
+          <FocusLock returnFocus>
+            <div ref={panelRef} tabIndex={-1}>
+              <div
+                style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
               >
-                ✕
-              </button>
-            </div>
+                <h2 id="sidepanel-title" style={{ margin: 0 }}>
+                  {title ?? ''}
+                </h2>
+                <button
+                  onClick={onClose}
+                  aria-label="Close panel"
+                  style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: 18 }}
+                >
+                  ✕
+                </button>
+              </div>
 
-            <div style={{ marginTop: 12 }}>{children}</div>
-          </div>
-        </FocusLock>
+              <div style={{ marginTop: 12 }}>{children}</div>
+            </div>
+          </FocusLock>
+        )}
       </div>
     </div>
   );
