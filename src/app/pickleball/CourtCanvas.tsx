@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function CourtCanvas({ width = 800, height = 600 }: Props) {
-  const { courts } = usePickleballContext();
+  const { courts, gameType } = usePickleballContext();
   const ref = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -58,23 +58,36 @@ export default function CourtCanvas({ width = 800, height = 600 }: Props) {
       ctx.fillStyle = '#fff';
       ctx.fillText(`Court ${i + 1}`, x + 8, y + 20);
 
-      // draw four player names centered in each quarter of the court
+      // draw player names based on game type
       ctx.save();
       ctx.font = "12px system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial";
       ctx.fillStyle = 'rgba(255,255,255,0.95)';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
-      const quarters = [
-        { cx: x + cellW * 0.25, cy: y + cellH * 0.25 }, // top-left
-        { cx: x + cellW * 0.75, cy: y + cellH * 0.25 }, // top-right
-        { cx: x + cellW * 0.25, cy: y + cellH * 0.75 }, // bottom-left
-        { cx: x + cellW * 0.75, cy: y + cellH * 0.75 }, // bottom-right
-      ];
+      if (gameType === 'doubles') {
+        // Four players in each quarter
+        const quarters = [
+          { cx: x + cellW * 0.25, cy: y + cellH * 0.25 }, // top-left
+          { cx: x + cellW * 0.75, cy: y + cellH * 0.25 }, // top-right
+          { cx: x + cellW * 0.25, cy: y + cellH * 0.75 }, // bottom-left
+          { cx: x + cellW * 0.75, cy: y + cellH * 0.75 }, // bottom-right
+        ];
 
-      quarters.forEach((q, idx) => {
-        ctx.fillText(`Player ${idx + 1}`, q.cx, q.cy);
-      });
+        quarters.forEach((q, idx) => {
+          ctx.fillText(`Player ${idx + 1}`, q.cx, q.cy);
+        });
+      } else {
+        // Two players - one on each side
+        const positions = [
+          { cx: x + cellW * 0.25, cy: y + cellH * 0.5 }, // left side
+          { cx: x + cellW * 0.75, cy: y + cellH * 0.5 }, // right side
+        ];
+
+        positions.forEach((q, idx) => {
+          ctx.fillText(`Player ${idx + 1}`, q.cx, q.cy);
+        });
+      }
       ctx.restore();
 
       // draw non-volley zones (NVZ) adjacent to the net for this court
@@ -112,11 +125,15 @@ export default function CourtCanvas({ width = 800, height = 600 }: Props) {
       ctx.setLineDash([]);
       ctx.restore();
     }
-  }, [courts, width, height]);
+  }, [courts, gameType, width, height]);
 
   return (
     <div style={{ marginTop: 24 }}>
-      <canvas ref={ref} role="img" aria-label={`Court layout with ${courts} courts`} />
+      <canvas
+        ref={ref}
+        role="img"
+        aria-label={`Court layout with ${courts} courts for ${gameType}`}
+      />
     </div>
   );
 }
