@@ -4,8 +4,6 @@ import React, { useCallback, useState } from 'react';
 import { ConfigForm, GameType } from './types';
 import { DEFAULT_COURT_COUNT, DEFAULT_GAME_TYPE } from './constants';
 
-
-
 type Props = {
   children: React.ReactNode;
 };
