@@ -1,17 +1,33 @@
-import React from 'react'
+import React from 'react';
 
 type FlexProps = React.HTMLAttributes<HTMLDivElement> & {
-  gap?: React.CSSProperties['gap']
-  justifyContent?: React.CSSProperties['justifyContent']
-  alignItems?: React.CSSProperties['alignItems']
-  direction?: React.CSSProperties['flexDirection']
-  wrap?: React.CSSProperties['flexWrap']
-  inline?: boolean
-}
+  as?: React.ElementType;
+  gap?: React.CSSProperties['gap'];
+  justifyContent?: React.CSSProperties['justifyContent'];
+  alignItems?: React.CSSProperties['alignItems'];
+  direction?: React.CSSProperties['flexDirection'];
+  wrap?: React.CSSProperties['flexWrap'];
+  inline?: boolean;
+};
 
 const Flex = React.forwardRef<HTMLDivElement, FlexProps>(
-  ({ gap, justifyContent, alignItems, direction = 'row', wrap = 'nowrap', inline = false, style, className = '', children, ...rest }, ref) => {
-    const display = inline ? 'inline-flex' : 'flex'
+  (
+    {
+      as: Component = 'div',
+      gap,
+      justifyContent,
+      alignItems,
+      direction = 'row',
+      wrap = 'nowrap',
+      inline = false,
+      style,
+      className = '',
+      children,
+      ...rest
+    },
+    ref,
+  ) => {
+    const display = inline ? 'inline-flex' : 'flex';
 
     const combinedStyle: React.CSSProperties = {
       display,
@@ -21,16 +37,16 @@ const Flex = React.forwardRef<HTMLDivElement, FlexProps>(
       flexDirection: direction,
       flexWrap: wrap,
       ...style,
-    }
+    };
 
     return (
-      <div ref={ref} style={combinedStyle} className={className} {...rest}>
+      <Component ref={ref} style={combinedStyle} className={className} {...rest}>
         {children}
-      </div>
-    )
-  }
-)
+      </Component>
+    );
+  },
+);
 
-Flex.displayName = 'Flex'
+Flex.displayName = 'Flex';
 
-export default Flex
+export default Flex;

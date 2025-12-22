@@ -112,7 +112,6 @@ export default function CourtCanvas({ width = 800, height = 600 }: Props) {
       ctx.setLineDash([]);
       ctx.restore();
     }
-
   }, [courts, width, height]);
 
   return (
