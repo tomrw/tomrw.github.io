@@ -57,8 +57,8 @@ export const Players = () => {
           <li key={pl.id}>
             <Flex justifyContent="space-between" gap={10}>
               <span>{pl.name}</span>
-              <Button onClick={() => remove(pl.id)} aria-label={`Delete ${pl.name}`}>
-                Delete
+              <Button type="button" onClick={() => remove(pl.id)} aria-label={`Delete ${pl.name}`}>
+                x
               </Button>
             </Flex>
           </li>
