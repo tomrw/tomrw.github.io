@@ -7,7 +7,8 @@ import Courts from './Courts';
 import Button from '@/ds/Button';
 import { ConfigForm } from './types';
 import { usePickleballContext } from './PickleballContext';
-import { DEFAULT_COURT_COUNT } from './constants';
+import { DEFAULT_COURT_COUNT, DEFAULT_GAME_TYPE } from './constants';
+import { GameType } from './GameType';
 
 type Props = {
   open: boolean;
@@ -26,6 +27,7 @@ export default function ConfigPanel({ open, onClose }: Props) {
     defaultValues: {
       players: PLAYERS,
       courts: DEFAULT_COURT_COUNT,
+      gameType: DEFAULT_GAME_TYPE,
     },
   });
 
@@ -37,12 +39,16 @@ export default function ConfigPanel({ open, onClose }: Props) {
   return (
     <FormProvider {...form}>
       <SidePanel open={open} onClose={onClose} title="Config">
-        <form onSubmit={onSubmit}>
-          <section style={{ marginTop: 18 }}>
+        <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+          <section>
+            <GameType />
+          </section>
+
+          <section>
             <Courts />
           </section>
 
-          <section style={{ marginTop: 18 }}>
+          <section>
             <h3 style={{ marginTop: 0 }}>Players</h3>
             <Players />
           </section>
