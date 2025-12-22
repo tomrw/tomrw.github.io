@@ -12,14 +12,12 @@ export default function PickleballClient() {
 
   return (
     <PickleballContextProvider>
-      <main style={{ padding: 24, maxWidth: 900, margin: '0 auto' }}>
-        <Flex justifyContent="space-between">
-          <h1>Pickleball</h1>
-          <Button onClick={() => setPanelOpen(true)}>Open Config</Button>
-        </Flex>
-        <CourtCanvas width={820} height={480} />
-        <ConfigPanel open={panelOpen} onClose={() => setPanelOpen(false)} />
-      </main>
+      <Flex justifyContent="space-between">
+        <h1>Pickleball</h1>
+        <Button onClick={() => setPanelOpen(true)}>Open Config</Button>
+      </Flex>
+      <CourtCanvas width={820} height={480} />
+      <ConfigPanel open={panelOpen} onClose={() => setPanelOpen(false)} />
     </PickleballContextProvider>
   );
 }

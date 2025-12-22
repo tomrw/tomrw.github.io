@@ -1,6 +1,6 @@
 export default function RecipesPage() {
   return (
-    <main style={{ padding: '24px', maxWidth: 900, margin: '0 auto' }}>
+    <>
       <h1>Recipes</h1>
       <p>Welcome — this is a starter page for recipes. Add your recipes here.</p>
 
@@ -50,6 +50,6 @@ export default function RecipesPage() {
           </ol>
         </article>
       </section>
-    </main>
+    </>
   );
 }
