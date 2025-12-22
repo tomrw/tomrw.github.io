@@ -27,7 +27,6 @@ const panelStyleBase: CSSProperties = {
   background: '#0b0b0b',
   color: '#fff',
   padding: 20,
-  boxShadow: '-24px 0 40px rgba(0,0,0,0.6)',
   overflowY: 'auto',
 };
 
@@ -74,7 +73,8 @@ export default function SidePanel({
     ...panelStyleBase,
     width,
     transform: open ? 'translateX(0)' : 'translateX(100%)',
-    transition: `transform ${duration}ms ${easing}`,
+    boxShadow: open ? '-24px 0 40px rgba(0,0,0,0.6)' : 'none',
+    transition: `transform ${duration}ms ${easing}, box-shadow ${duration}ms ${easing}`,
   };
 
   return (
