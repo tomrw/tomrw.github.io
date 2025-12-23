@@ -1,15 +1,20 @@
 import React from 'react';
+import { SxProp, transformSx } from '../sx';
+import { useWindowSize } from '../../hooks/useWindowSize';
 
 type Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   full?: boolean;
+  sx?: SxProp;
 };
 
 const Button = React.forwardRef<HTMLButtonElement, Props>(
-  ({ full = false, className = '', children, ...rest }, ref) => {
+  ({ full = false, className = '', sx, children, ...rest }, ref) => {
     const mergedClass = `${className} tw-button ${full ? 'tw-button--full' : ''}`.trim();
+    const { breakpoint } = useWindowSize();
+    const sxStyle = sx ? transformSx(sx, breakpoint) : {};
 
     return (
-      <button ref={ref} className={mergedClass} {...rest}>
+      <button ref={ref} className={mergedClass} style={sxStyle} {...rest}>
         {children}
         <style jsx>{`
           .tw-button {

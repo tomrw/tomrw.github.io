@@ -2,6 +2,7 @@
 
 import { CSSProperties, useEffect, useRef } from 'react';
 import FocusLock from 'react-focus-lock';
+import { SxProp, transformSx } from '../sx';
 
 type Props = {
   open: boolean;
@@ -10,6 +11,7 @@ type Props = {
   title: string;
   duration?: number; // animation duration in ms
   easing?: string;
+  sx?: SxProp;
 };
 
 const overlayBase: CSSProperties = {
@@ -38,6 +40,7 @@ export default function SidePanel({
   title,
   duration = 300,
   easing = 'cubic-bezier(0.2, 0.8, 0.2, 1)',
+  sx,
 }: React.PropsWithChildren<Props>) {
   const panelRef = useRef<HTMLDivElement | null>(null);
 
@@ -69,12 +72,15 @@ export default function SidePanel({
     transition: `background ${duration}ms ${easing}, pointer-events ${duration}ms ${easing}`,
   };
 
+  const sxStyle = sx ? transformSx(sx) : {};
+
   const panelStyle: CSSProperties = {
     ...panelStyleBase,
     width,
     transform: open ? 'translateX(0)' : 'translateX(100%)',
     boxShadow: open ? '-24px 0 40px rgba(0,0,0,0.6)' : 'none',
     transition: `transform ${duration}ms ${easing}, box-shadow ${duration}ms ${easing}`,
+    ...sxStyle,
   };
 
   return (

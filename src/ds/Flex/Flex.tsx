@@ -1,4 +1,5 @@
 import React from 'react';
+import { SxProp, transformSx } from '../sx';
 
 type FlexProps = React.HTMLAttributes<HTMLDivElement> & {
   as?: React.ElementType;
@@ -8,6 +9,7 @@ type FlexProps = React.HTMLAttributes<HTMLDivElement> & {
   direction?: React.CSSProperties['flexDirection'];
   wrap?: React.CSSProperties['flexWrap'];
   inline?: boolean;
+  sx?: SxProp;
 };
 
 const Flex = React.forwardRef<HTMLDivElement, FlexProps>(
@@ -20,14 +22,15 @@ const Flex = React.forwardRef<HTMLDivElement, FlexProps>(
       direction = 'row',
       wrap = 'nowrap',
       inline = false,
-      style,
       className = '',
       children,
+      sx,
       ...rest
     },
     ref,
   ) => {
     const display = inline ? 'inline-flex' : 'flex';
+    const sxStyle = sx ? transformSx(sx) : {};
 
     const combinedStyle: React.CSSProperties = {
       display,
@@ -36,7 +39,7 @@ const Flex = React.forwardRef<HTMLDivElement, FlexProps>(
       alignItems,
       flexDirection: direction,
       flexWrap: wrap,
-      ...style,
+      ...sxStyle,
     };
 
     return (

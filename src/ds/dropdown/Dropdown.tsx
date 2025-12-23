@@ -1,4 +1,5 @@
 import { useId } from 'react';
+import { SxProp, transformSx } from '../sx';
 
 type Value = string | number;
 type Props = {
@@ -6,10 +7,12 @@ type Props = {
   options: { value: Value; label: string }[];
   onChange: (value: Value) => void;
   value: Value;
+  sx?: SxProp;
 };
 
-export default function SidePanel({ label, options, onChange, value }: Props) {
+export default function Dropdown({ label, options, onChange, value, sx }: Props) {
   const id = useId();
+  const sxStyle = sx ? transformSx(sx) : {};
 
   return (
     <label style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -21,7 +24,7 @@ export default function SidePanel({ label, options, onChange, value }: Props) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         aria-label="Number of courts"
-        style={{ padding: '8px 10px', borderRadius: 8, width: '100%' }}
+        style={{ padding: '8px 10px', borderRadius: 8, width: '100%', ...sxStyle }}
       >
         {options.map(({ value, label }) => (
           <option key={value} value={value}>

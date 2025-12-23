@@ -35,16 +35,19 @@ export default function ConfigPanel({ open, onClose }: Props) {
       gameType: DEFAULT_GAME_TYPE,
     },
   });
+  const { subscribe } = form;
 
   useEffect(() => {
-    const subscription = form.watch((_, { name }) => {
-      if (name === 'players') {
-        const currentPlayers = form.getValues().players;
-        updatePlayers(currentPlayers);
-      }
+    const subscription = subscribe({
+      formState: { values: true },
+      callback: (data) => {
+        if (data.name === 'players') {
+          updatePlayers(data.values.players);
+        }
+      },
     });
-    return () => subscription.unsubscribe();
-  }, [form, updatePlayers]);
+    return () => subscription();
+  }, [subscribe, updatePlayers]);
 
   const onSubmit = form.handleSubmit((data) => {
     updateConfig(data);

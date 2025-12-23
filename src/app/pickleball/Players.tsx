@@ -42,11 +42,7 @@ export const Players = () => {
           aria-label="Player name"
           style={{ flex: 1, padding: '8px 10px', borderRadius: 8 }}
         />
-        <Button
-          type="button"
-          onClick={onAddPlayer}
-          style={{ padding: '8px 12px', borderRadius: 8 }}
-        >
+        <Button type="button" onClick={onAddPlayer}>
           Add
         </Button>
       </Flex>
