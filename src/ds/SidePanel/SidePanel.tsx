@@ -3,6 +3,7 @@
 import { CSSProperties, useEffect, useRef } from 'react';
 import FocusLock from 'react-focus-lock';
 import { SxProp, useTransformSx } from '../sx';
+import Button from '../Button';
 
 type Props = {
   open: boolean;
@@ -95,13 +96,13 @@ export default function SidePanel({
                 <h2 id="sidepanel-title" style={{ margin: 0 }}>
                   {title ?? ''}
                 </h2>
-                <button
+                <Button
                   onClick={onClose}
                   aria-label="Close panel"
                   style={{ background: 'transparent', border: 'none', color: '#fff', fontSize: 18 }}
                 >
                   ✕
-                </button>
+                </Button>
               </div>
 
               <div style={{ marginTop: 12 }}>{children}</div>
