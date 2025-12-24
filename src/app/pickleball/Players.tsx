@@ -30,7 +30,7 @@ export const Players = () => {
   return (
     <>
       <h3>Players</h3>
-      <Flex justifyContent="space-between" sx={{ gap: [1, 1.25], mb: 1 }}>
+      <Flex justifyContent="space-between" gap={1} sx={{ mb: 1 }}>
         <Input
           value={newName}
           onChange={setNewName}
