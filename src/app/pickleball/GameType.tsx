@@ -15,7 +15,7 @@ export const GameType = () => {
         <Box
           sx={{
             display: 'flex',
-            gap: '12px',
+            gap: 1.5,
             alignItems: 'center',
           }}
         >
@@ -25,14 +25,14 @@ export const GameType = () => {
           <Box
             sx={{
               display: 'flex',
-              gap: ['4px', '8px'],
+              gap: [0.5, 1],
             }}
           >
             <Box
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '4px',
+                gap: 0.5,
                 cursor: 'pointer',
               }}
               as="label"
@@ -49,7 +49,7 @@ export const GameType = () => {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '4px',
+                gap: 0.5,
                 cursor: 'pointer',
               }}
               as="label"

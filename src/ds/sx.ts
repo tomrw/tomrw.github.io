@@ -35,6 +35,10 @@ const shorthandMap: Record<string, string | string[]> = {
   bg: 'backgroundColor',
 };
 
+function toRem(value: number): string {
+  return `${value * 0.5}rem`; // 1 unit = 0.5rem = 8px
+}
+
 function toPx(value: number): string {
   return `${value}px`;
 }
@@ -43,7 +47,7 @@ function processValue(value: SxValue): ProcessedValue {
   if (value === null || value === undefined) return null;
 
   if (typeof value === 'string') return value;
-  if (typeof value === 'number') return toPx(value);
+  if (typeof value === 'number') return value <= 32 ? toRem(value) : toPx(value);
   if (typeof value === 'object' && !Array.isArray(value)) return value;
 
   // Handle responsive arrays

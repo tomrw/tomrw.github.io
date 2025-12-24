@@ -29,7 +29,7 @@ export const Players = () => {
 
   return (
     <>
-      <Flex justifyContent="space-between" sx={{ gap: ['8px', '10px'] }}>
+      <Flex justifyContent="space-between" sx={{ gap: [1, 1.25] }}>
         <input
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
@@ -41,7 +41,7 @@ export const Players = () => {
           }}
           placeholder="Add player name"
           aria-label="Player name"
-          style={{ flex: 1, padding: '8px 10px', borderRadius: 8 }}
+          style={{ flex: 1 }}
         />
         <Button type="button" onClick={onAddPlayer}>
           Add
@@ -54,12 +54,12 @@ export const Players = () => {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          gap: ['6px', '8px'],
+          gap: [0.75, 1],
           marginBlockEnd: 10,
         }}
       >
         {fields.map((pl) => (
-          <Flex as="li" key={pl.id} justifyContent="space-between" sx={{ gap: ['8px', '10px'] }}>
+          <Flex as="li" key={pl.id} justifyContent="space-between" sx={{ gap: [1, 1.25] }}>
             <span>{pl.name}</span>
             <Button type="button" onClick={() => remove(pl.id)} aria-label={`Delete ${pl.name}`}>
               x

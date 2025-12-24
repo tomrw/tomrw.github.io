@@ -1,5 +1,6 @@
 import { useId } from 'react';
 import { SxProp, useTransformSx } from '../sx';
+import Box from '../Box';
 
 type Value = string | number;
 type Props = {
@@ -24,7 +25,7 @@ export default function Dropdown({ label, options, onChange, value, sx }: Props)
         value={value}
         onChange={(e) => onChange(e.target.value)}
         aria-label="Number of courts"
-        style={{ padding: '8px 10px', borderRadius: 8, width: '100%', ...sxStyle }}
+        style={{ width: '100%', ...sxStyle }}
       >
         {options.map(({ value, label }) => (
           <option key={value} value={value}>
