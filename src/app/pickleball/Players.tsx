@@ -4,6 +4,7 @@ import { ConfigForm } from './types';
 import Button from '@/ds/Button';
 import Flex from '@/ds/Flex';
 import Input from '@/ds/Input';
+import Box from '@/ds/Box';
 
 export const Players = () => {
   const [newName, setNewName] = useState<string>('');
@@ -49,7 +50,7 @@ export const Players = () => {
           Add
         </Button>
       </Flex>
-      {error && <div style={{ color: '#e11', marginBottom: 12 }}>{error}</div>}
+      {error && <Box sx={{ color: '#e11', mb: 1 }}>{error}</Box>}
 
       <Flex as="ul" direction="column" gap={1}>
         {fields.map((pl) => (

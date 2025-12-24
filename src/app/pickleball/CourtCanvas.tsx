@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { usePickleballContext } from './PickleballContext';
+import Box from '@/ds/Box/Box';
 
 type Props = {
   width?: number;
@@ -128,12 +129,12 @@ export default function CourtCanvas({ width = 800, height = 600 }: Props) {
   }, [courts, gameType, width, height]);
 
   return (
-    <div style={{ marginTop: 24 }}>
+    <Box sx={{ mt: 6 }}>
       <canvas
         ref={ref}
         role="img"
         aria-label={`Court layout with ${courts} courts for ${gameType}`}
       />
-    </div>
+    </Box>
   );
 }

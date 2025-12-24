@@ -4,6 +4,7 @@ import { CSSProperties, useEffect, useRef } from 'react';
 import FocusLock from 'react-focus-lock';
 import { SxProp, useTransformSx } from '../sx';
 import Button from '../Button';
+import Box from '../Box';
 
 type Props = {
   open: boolean;
@@ -105,7 +106,7 @@ export default function SidePanel({
                 </Button>
               </div>
 
-              <div style={{ marginTop: 12 }}>{children}</div>
+              <Box sx={{ mt: 3 }}>{children}</Box>
             </div>
           </FocusLock>
         )}
