@@ -1,5 +1,5 @@
 import React from 'react';
-import { SxProp, transformSx } from '../sx';
+import { SxProp, useTransformSx } from '../sx';
 
 type FlexProps = React.HTMLAttributes<HTMLDivElement> & {
   as?: React.ElementType;
@@ -30,7 +30,7 @@ const Flex = React.forwardRef<HTMLDivElement, FlexProps>(
     ref,
   ) => {
     const display = inline ? 'inline-flex' : 'flex';
-    const sxStyle = sx ? transformSx(sx) : {};
+    const sxStyle = useTransformSx(sx);
 
     const combinedStyle: React.CSSProperties = {
       display,

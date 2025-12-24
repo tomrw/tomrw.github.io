@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import { SxProp, transformSx } from '../sx';
+import { SxProp, useTransformSx } from '../sx';
 
 type Value = string | number;
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
 
 export default function Dropdown({ label, options, onChange, value, sx }: Props) {
   const id = useId();
-  const sxStyle = sx ? transformSx(sx) : {};
+  const sxStyle = useTransformSx(sx);
 
   return (
     <label style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

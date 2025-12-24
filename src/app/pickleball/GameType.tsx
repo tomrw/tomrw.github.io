@@ -2,6 +2,7 @@
 
 import { Controller, useFormContext } from 'react-hook-form';
 import { ConfigForm } from './types';
+import Box from '@/ds/Box';
 
 export const GameType = () => {
   const { control } = useFormContext<ConfigForm>();
@@ -11,10 +12,31 @@ export const GameType = () => {
       name="gameType"
       control={control}
       render={({ field }) => (
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-          <label style={{ fontWeight: 500, minWidth: 80 }}>Game Type:</label>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: '12px',
+            alignItems: 'center',
+          }}
+        >
+          <Box sx={{ fontWeight: 500, minWidth: [0, 80] }} as="label">
+            Game Type:
+          </Box>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: ['4px', '8px'],
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+                cursor: 'pointer',
+              }}
+              as="label"
+            >
               <input
                 type="radio"
                 value="singles"
@@ -22,8 +44,16 @@ export const GameType = () => {
                 onChange={() => field.onChange('singles')}
               />
               Singles
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer' }}>
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px',
+                cursor: 'pointer',
+              }}
+              as="label"
+            >
               <input
                 type="radio"
                 value="doubles"
@@ -31,9 +61,9 @@ export const GameType = () => {
                 onChange={() => field.onChange('doubles')}
               />
               Doubles
-            </label>
-          </div>
-        </div>
+            </Box>
+          </Box>
+        </Box>
       )}
     />
   );

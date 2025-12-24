@@ -11,6 +11,7 @@ import { usePickleballContext } from './PickleballContext';
 import { DEFAULT_COURT_COUNT, DEFAULT_GAME_TYPE } from './constants';
 import { GameType } from './GameType';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import Box from '@/ds/Box';
 
 type Props = {
   open: boolean;
@@ -56,8 +57,22 @@ export default function ConfigPanel({ open, onClose }: Props) {
 
   return (
     <FormProvider {...form}>
-      <SidePanel open={open} onClose={onClose} title="Config">
-        <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+      <SidePanel
+        open={open}
+        onClose={onClose}
+        title="Config"
+        sx={{
+          width: ['100%', 400, 480, 560],
+        }}
+      >
+        <Box
+          as="form"
+          onSubmit={onSubmit}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
           <section>
             <GameType />
           </section>
@@ -74,7 +89,7 @@ export default function ConfigPanel({ open, onClose }: Props) {
           <Button full type="submit">
             Save
           </Button>
-        </form>
+        </Box>
       </SidePanel>
     </FormProvider>
   );

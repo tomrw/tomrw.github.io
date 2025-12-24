@@ -1,3 +1,8 @@
+'use client';
+
+import { useMemo } from 'react';
+import { useWindowSize } from '../hooks/useWindowSize';
+
 type CSSValue = string | number;
 interface CSSObject {
   [key: string]: CSSValue | CSSObject;
@@ -119,5 +124,9 @@ function transformSx(sx: SxProp, currentBreakpoint: Breakpoint = 'md'): { [key: 
   return styles;
 }
 
+export function useTransformSx(sx?: SxProp) {
+  const { breakpoint } = useWindowSize();
+  return useMemo(() => (sx ? transformSx(sx, breakpoint) : {}), [sx, breakpoint]);
+}
+
 export type { SxProp };
-export { transformSx };

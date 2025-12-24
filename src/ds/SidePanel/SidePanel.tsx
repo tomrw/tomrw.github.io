@@ -2,7 +2,7 @@
 
 import { CSSProperties, useEffect, useRef } from 'react';
 import FocusLock from 'react-focus-lock';
-import { SxProp, transformSx } from '../sx';
+import { SxProp, useTransformSx } from '../sx';
 
 type Props = {
   open: boolean;
@@ -72,7 +72,7 @@ export default function SidePanel({
     transition: `background ${duration}ms ${easing}, pointer-events ${duration}ms ${easing}`,
   };
 
-  const sxStyle = sx ? transformSx(sx) : {};
+  const sxStyle = useTransformSx(sx);
 
   const panelStyle: CSSProperties = {
     ...panelStyleBase,

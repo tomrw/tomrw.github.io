@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { ConfigForm } from './types';
 import Button from '@/ds/Button';
 import Flex from '@/ds/Flex';
+import Box from '@/ds/Box';
 
 export const Players = () => {
   const [newName, setNewName] = useState<string>('');
@@ -28,7 +29,7 @@ export const Players = () => {
 
   return (
     <>
-      <Flex justifyContent="space-between" gap={10}>
+      <Flex justifyContent="space-between" sx={{ gap: ['8px', '10px'] }}>
         <input
           value={newName}
           onChange={(e) => setNewName(e.target.value)}
@@ -48,16 +49,24 @@ export const Players = () => {
       </Flex>
       {error && <div style={{ color: '#e11', marginBottom: 12 }}>{error}</div>}
 
-      <ul style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBlockEnd: 10 }}>
+      <Box
+        as="ul"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: ['6px', '8px'],
+          marginBlockEnd: 10,
+        }}
+      >
         {fields.map((pl) => (
-          <Flex as="li" key={pl.id} justifyContent="space-between" gap={10}>
+          <Flex as="li" key={pl.id} justifyContent="space-between" sx={{ gap: ['8px', '10px'] }}>
             <span>{pl.name}</span>
             <Button type="button" onClick={() => remove(pl.id)} aria-label={`Delete ${pl.name}`}>
               x
             </Button>
           </Flex>
         ))}
-      </ul>
+      </Box>
     </>
   );
 };
