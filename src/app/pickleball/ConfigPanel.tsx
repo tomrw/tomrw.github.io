@@ -71,6 +71,7 @@ export default function ConfigPanel({ open, onClose }: Props) {
           sx={{
             display: 'flex',
             flexDirection: 'column',
+            gap: 2,
           }}
         >
           <section>
@@ -82,7 +83,6 @@ export default function ConfigPanel({ open, onClose }: Props) {
           </section>
 
           <section>
-            <h3 style={{ marginTop: 0 }}>Players</h3>
             <Players />
           </section>
 

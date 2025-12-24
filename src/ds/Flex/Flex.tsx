@@ -3,7 +3,7 @@ import { SxProp, useTransformSx } from '../sx';
 
 type FlexProps = React.HTMLAttributes<HTMLDivElement> & {
   as?: React.ElementType;
-  gap?: React.CSSProperties['gap'];
+  gap?: number;
   justifyContent?: React.CSSProperties['justifyContent'];
   alignItems?: React.CSSProperties['alignItems'];
   direction?: React.CSSProperties['flexDirection'];
@@ -30,11 +30,13 @@ const Flex = React.forwardRef<HTMLDivElement, FlexProps>(
     ref,
   ) => {
     const display = inline ? 'inline-flex' : 'flex';
-    const sxStyle = useTransformSx(sx);
+    const sxStyle = useTransformSx({
+      ...sx,
+      gap: gap ?? 0,
+    });
 
     const combinedStyle: React.CSSProperties = {
       display,
-      gap,
       justifyContent,
       alignItems,
       flexDirection: direction,

@@ -1,6 +1,6 @@
 import { useId } from 'react';
 import { SxProp, useTransformSx } from '../sx';
-import Box from '../Box';
+import Flex from '../Flex';
 
 type Value = string | number;
 type Props = {
@@ -13,26 +13,24 @@ type Props = {
 
 export default function Dropdown({ label, options, onChange, value, sx }: Props) {
   const id = useId();
-  const sxStyle = useTransformSx(sx);
+  const sxStyle = useTransformSx({
+    width: '100%',
+    padding: 1,
+    ...sx,
+  });
 
   return (
-    <label style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+    <Flex sx={{ flexDirection: 'column', gap: 1 }}>
       <label htmlFor={id} style={{ fontWeight: 600 }}>
         {label}
       </label>
-      <select
-        id={id}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        aria-label="Number of courts"
-        style={{ width: '100%', ...sxStyle }}
-      >
+      <select id={id} value={value} onChange={(e) => onChange(e.target.value)} style={sxStyle}>
         {options.map(({ value, label }) => (
           <option key={value} value={value}>
             {label}
           </option>
         ))}
       </select>
-    </label>
+    </Flex>
   );
 }

@@ -3,7 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { ConfigForm } from './types';
 import Button from '@/ds/Button';
 import Flex from '@/ds/Flex';
-import Box from '@/ds/Box';
+import Input from '@/ds/Input';
 
 export const Players = () => {
   const [newName, setNewName] = useState<string>('');
@@ -29,19 +29,21 @@ export const Players = () => {
 
   return (
     <>
-      <Flex justifyContent="space-between" sx={{ gap: [1, 1.25] }}>
-        <input
+      <h3>Players</h3>
+      <Flex justifyContent="space-between" sx={{ gap: [1, 1.25], mb: 1 }}>
+        <Input
           value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              onAddPlayer();
-            }
+          onChange={setNewName}
+          inputProps={{
+            'aria-label': 'Player name',
+            onKeyDown: (e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                onAddPlayer();
+              }
+            },
+            placeholder: 'Enter player name',
           }}
-          placeholder="Add player name"
-          aria-label="Player name"
-          style={{ flex: 1 }}
         />
         <Button type="button" onClick={onAddPlayer}>
           Add
@@ -49,24 +51,16 @@ export const Players = () => {
       </Flex>
       {error && <div style={{ color: '#e11', marginBottom: 12 }}>{error}</div>}
 
-      <Box
-        as="ul"
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: [0.75, 1],
-          marginBlockEnd: 10,
-        }}
-      >
+      <Flex as="ul" direction="column" gap={1}>
         {fields.map((pl) => (
-          <Flex as="li" key={pl.id} justifyContent="space-between" sx={{ gap: [1, 1.25] }}>
+          <Flex as="li" key={pl.id} justifyContent="space-between" sx={{ gap: 1 }}>
             <span>{pl.name}</span>
             <Button type="button" onClick={() => remove(pl.id)} aria-label={`Delete ${pl.name}`}>
               x
             </Button>
           </Flex>
         ))}
-      </Box>
+      </Flex>
     </>
   );
 };
