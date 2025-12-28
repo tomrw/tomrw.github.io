@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { ConfigForm } from './types';
+import { usePickleballContext } from './PickleballContext';
 import Button from '@/ds/Button';
 import Flex from '@/ds/Flex';
 import Input from '@/ds/Input';
@@ -12,6 +13,7 @@ export const Players = () => {
 
   const { control } = useFormContext<ConfigForm>();
   const { fields, remove, append } = useFieldArray({ control, name: 'players' });
+  const { clearPlayerAssignments } = usePickleballContext();
 
   const onAddPlayer = () => {
     const name = newName.trim();
@@ -26,6 +28,11 @@ export const Players = () => {
     append({ id: nextId, name });
     setNewName('');
     setError('');
+  };
+
+  const onRemovePlayer = (playerId: number) => {
+    clearPlayerAssignments(playerId);
+    remove(playerId);
   };
 
   return (
@@ -56,7 +63,11 @@ export const Players = () => {
         {fields.map((pl) => (
           <Flex as="li" key={pl.id} justifyContent="space-between" sx={{ gap: 1 }}>
             <span>{pl.name}</span>
-            <Button type="button" onClick={() => remove(pl.id)} aria-label={`Delete ${pl.name}`}>
+            <Button
+              type="button"
+              onClick={() => onRemovePlayer(pl.id)}
+              aria-label={`Delete ${pl.name}`}
+            >
               x
             </Button>
           </Flex>

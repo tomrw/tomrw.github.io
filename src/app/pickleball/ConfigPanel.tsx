@@ -16,6 +16,7 @@ import Box from '@/ds/Box';
 type Props = {
   open: boolean;
   onClose: () => void;
+  onPlayersChange: (players: ConfigForm['players']) => void;
 };
 
 const DEFAULT_PLAYERS = [
@@ -25,7 +26,7 @@ const DEFAULT_PLAYERS = [
 
 const PLAYERS_STORAGE_KEY = 'pickleball-players';
 
-export default function ConfigPanel({ open, onClose }: Props) {
+export default function ConfigPanel({ open, onClose, onPlayersChange }: Props) {
   const { updateConfig } = usePickleballContext();
   const [players, updatePlayers] = useLocalStorage(PLAYERS_STORAGE_KEY, DEFAULT_PLAYERS);
 
@@ -44,11 +45,12 @@ export default function ConfigPanel({ open, onClose }: Props) {
       callback: (data) => {
         if (data.name === 'players') {
           updatePlayers(data.values.players);
+          onPlayersChange(data.values.players);
         }
       },
     });
     return () => subscription();
-  }, [subscribe, updatePlayers]);
+  }, [subscribe, updatePlayers, onPlayersChange]);
 
   const onSubmit = form.handleSubmit((data) => {
     updateConfig(data);
