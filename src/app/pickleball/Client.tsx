@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import CourtCanvas from './CourtCanvas';
 import ConfigPanel from './ConfigPanel';
 import AssignmentsPanel from './AssignmentsPanel';
 import PickleballContextProvider from './PickleballContext';
@@ -9,6 +8,7 @@ import Button from '@/ds/Button';
 import Flex from '@/ds/Flex';
 import { ConfigForm } from './types';
 import Heading from '@/ds/Heading';
+import CourtGrid from './components/Courts/CourtGrid';
 
 const DEFAULT_PLAYERS = [
   { id: 1, name: 'Alice' },
@@ -56,7 +56,7 @@ export default function PickleballClient() {
           </Button>
         </Flex>
       </Flex>
-      <CourtCanvas width={820} height={480} players={players} />
+      <CourtGrid players={players} />
       <ConfigPanel
         open={activePanel === 'config'}
         onClose={closePanel}

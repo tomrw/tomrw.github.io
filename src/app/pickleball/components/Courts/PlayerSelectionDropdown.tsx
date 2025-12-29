@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
-import { ConfigForm } from './types';
-import { usePickleballContext } from './PickleballContext';
+import { ConfigForm } from '../../types';
+import { usePickleballContext } from '../../PickleballContext';
 import Box from '@/ds/Box';
 import Button from '@/ds/Button';
 import Flex from '@/ds/Flex';
@@ -59,14 +59,6 @@ export default function PlayerSelectionDropdown({
   // Handle search input changes
   const handleSearchChange = useCallback((value: string) => {
     setSearchQuery(value);
-  }, []);
-
-  // Clear search query
-  const clearSearch = useCallback(() => {
-    setSearchQuery('');
-    if (searchInputRef.current) {
-      searchInputRef.current.focus();
-    }
   }, []);
 
   // Check if position is currently occupied
@@ -156,12 +148,12 @@ export default function PlayerSelectionDropdown({
         <Flex justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
           <Heading as="h3">{currentAssignment ? 'Replace Player' : 'Assign Player'}</Heading>
           <Button type="button" onClick={onClose}>
-            ×
+            x
           </Button>
         </Flex>
 
         {currentAssignment && (
-          <Box sx={{ mb: 2, p: 2, bg: '#f8f9fa', borderRadius: '4px' }}>
+          <Box sx={{ mb: 2, p: 2, bg: '#f8f9fa', borderRadius: 1 }}>
             <Box sx={{ fontSize: '14px', color: '#666', mb: 1 }}>Current Player:</Box>
             <Box sx={{ fontSize: '16px', fontWeight: 'bold' }}>
               {players.find((p) => p.id === currentAssignment.playerId)?.name}
@@ -186,7 +178,6 @@ export default function PlayerSelectionDropdown({
           </Button>
         )}
 
-        {/* Search Input */}
         {unassignedPlayers.length > 0 && (
           <Box sx={{ mb: 2, position: 'relative' }}>
             <Input
@@ -196,48 +187,8 @@ export default function PlayerSelectionDropdown({
               inputProps={{
                 placeholder: 'Search players...',
                 'aria-label': 'Search players',
-                style: {
-                  minHeight: '44px', // Mobile-friendly touch target
-                  fontSize: '16px', // Prevent zoom on iOS
-                  paddingRight: searchQuery ? '40px' : '12px',
-                },
-              }}
-              sx={{
-                border: '1px solid #ddd',
-                '&:focus': {
-                  borderColor: '#007acc',
-                  outline: '2px solid rgba(0, 122, 204, 0.2)',
-                  outlineOffset: '2px',
-                },
               }}
             />
-            {searchQuery && (
-              <Button
-                type="button"
-                onClick={clearSearch}
-                sx={{
-                  position: 'absolute',
-                  right: '8px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'transparent',
-                  border: 'none',
-                  color: '#666',
-                  fontSize: '16px',
-                  padding: '4px',
-                  minWidth: 'auto',
-                  minHeight: '32px',
-                  cursor: 'pointer',
-                  '&:hover': {
-                    color: '#333',
-                    bg: 'rgba(0, 0, 0, 0.05)',
-                  },
-                }}
-                aria-label="Clear search"
-              >
-                ×
-              </Button>
-            )}
           </Box>
         )}
 

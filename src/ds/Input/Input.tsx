@@ -22,8 +22,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           style={{
             width: 'inherit',
             padding: '0.5rem 0.625rem',
-            ...sxStyle,
             borderRadius: '0.5rem',
+            border: '1px solid #ccc',
+            ...sxStyle,
           }}
           {...inputProps}
         />
