@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { usePickleballContext } from '../../PickleballContext';
 import Box from '@/ds/Box/Box';
 import Court from './Court';
@@ -9,29 +9,22 @@ export default function CourtGrid() {
     usePickleballContext();
 
   const [dropdownState, setDropdownState] = useState<{
-    isOpen: boolean;
-    position: { courtId: number; position: number } | null;
-  }>({
-    isOpen: false,
-    position: null,
-  });
+    courtId: number;
+    position: number;
+  } | null>(null);
 
   // Handle player selection
   const handleSelectPlayer = useCallback(
     (playerId: number) => {
-      if (dropdownState.position) {
-        const result = assignPlayerToCourt(
-          dropdownState.position.courtId,
-          playerId,
-          dropdownState.position.position,
-        );
+      if (dropdownState) {
+        const result = assignPlayerToCourt(dropdownState.courtId, playerId, dropdownState.position);
 
         if (!result.isValid) {
           alert(result.error || 'Assignment failed');
         }
       }
     },
-    [dropdownState.position, assignPlayerToCourt],
+    [dropdownState, assignPlayerToCourt],
   );
 
   // Handle player removal
@@ -44,14 +37,14 @@ export default function CourtGrid() {
 
   // Close dropdown
   const closeDropdown = () => {
-    setDropdownState({ isOpen: false, position: null });
+    setDropdownState(null);
   };
 
   // Handle position click
   const handlePositionClick = (courtId: number, position: number) => {
     setDropdownState({
-      isOpen: true,
-      position: { courtId, position },
+      courtId,
+      position,
     });
   };
 
@@ -82,19 +75,20 @@ export default function CourtGrid() {
               courtId={courtId}
               gameType={gameType}
               assignments={courtAssignments}
-              onPositionClick={handlePositionClick}
+              onPositionClick={(position) => handlePositionClick(courtId, position)}
             />
           );
         })}
       </Box>
 
-      <PlayerSelectionDropdown
-        isOpen={dropdownState.isOpen}
-        position={dropdownState.position}
-        onClose={closeDropdown}
-        onSelectPlayer={handleSelectPlayer}
-        onRemovePlayer={handleRemovePlayer}
-      />
+      {dropdownState && (
+        <PlayerSelectionDropdown
+          position={{ courtId: dropdownState.courtId, position: dropdownState.position }}
+          onClose={closeDropdown}
+          onSelectPlayer={handleSelectPlayer}
+          onRemovePlayer={handleRemovePlayer}
+        />
+      )}
     </Box>
   );
 }

@@ -10,28 +10,24 @@ import Heading from '@/ds/Heading';
 import { usePlayers } from '../../hooks/usePlayers';
 
 type Props = {
-  isOpen: boolean;
-  position: { courtId: number; position: number } | null;
+  position: { courtId: number; position: number };
   onClose: () => void;
   onSelectPlayer: (playerId: number) => void;
   onRemovePlayer: (courtId: number, position: number) => void;
 };
 
 export default function PlayerSelectionDropdown({
-  isOpen,
   position,
   onClose,
   onSelectPlayer,
   onRemovePlayer,
 }: Props) {
-  // Call all hooks at the top
   const [dropdownPosition, setDropdownPosition] = useState({ x: 0, y: 0 });
   const [searchQuery, setSearchQuery] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const { assignments, getUnassignedPlayers } = usePickleballContext();
 
-  const shouldRender = isOpen && position;
   const { players } = usePlayers();
   const unassignedPlayers = getUnassignedPlayers(players);
 
@@ -44,22 +40,18 @@ export default function PlayerSelectionDropdown({
     return unassignedPlayers.filter((player) => player.name.toLowerCase().includes(query));
   }, [unassignedPlayers, searchQuery]);
 
-  // Auto-focus search input when dropdown opens and reset search
   useEffect(() => {
-    if (shouldRender && searchInputRef.current) {
-      // Small delay to ensure dropdown is rendered
+    if (searchInputRef.current) {
       setTimeout(() => {
         searchInputRef.current?.focus();
       }, 100);
     }
-  }, [shouldRender, isOpen, position]);
+  }, [position]);
 
-  // Handle search input changes
   const handleSearchChange = useCallback((value: string) => {
     setSearchQuery(value);
   }, []);
 
-  // Check if position is currently occupied
   const currentAssignment = position
     ? assignments[position.courtId]?.find((a) => a.position === position.position)
     : null;
@@ -76,39 +68,32 @@ export default function PlayerSelectionDropdown({
     onClose();
   };
 
-  // Position dropdown near clicked court position
   useEffect(() => {
-    if (shouldRender) {
-      const updatePosition = () => {
-        if (dropdownRef.current) {
-          const rect = dropdownRef.current.getBoundingClientRect();
-          const viewportWidth = window.innerWidth;
+    const updatePosition = () => {
+      if (dropdownRef.current) {
+        const rect = dropdownRef.current.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
 
-          let x = 0;
-          let y = 0;
+        let x = 0;
+        let y = 0;
 
-          // Position dropdown near court position (adjust for viewport)
-          if (viewportWidth > 768) {
-            // Desktop: position to the right
-            x = Math.min(window.innerWidth - rect.width - 20, 850);
-            y = Math.max(20, window.scrollY + 200);
-          } else {
-            // Mobile: center on screen
-            x = (viewportWidth - rect.width) / 2;
-            y = Math.max(20, window.scrollY + 100);
-          }
-
-          setDropdownPosition({ x, y });
+        if (viewportWidth > 768) {
+          x = Math.min(window.innerWidth - rect.width - 20, 850);
+          y = Math.max(20, window.scrollY + 200);
+        } else {
+          x = (viewportWidth - rect.width) / 2;
+          y = Math.max(20, window.scrollY + 100);
         }
-      };
 
-      updatePosition();
-      window.addEventListener('resize', updatePosition);
-      return () => window.removeEventListener('resize', updatePosition);
-    }
-  }, [shouldRender]);
+        setDropdownPosition({ x, y });
+      }
+    };
 
-  // Handle click outside
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    return () => window.removeEventListener('resize', updatePosition);
+  }, []);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -116,13 +101,9 @@ export default function PlayerSelectionDropdown({
       }
     };
 
-    if (shouldRender) {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => document.removeEventListener('mousedown', handleClickOutside);
-    }
-  }, [shouldRender, onClose]);
-
-  if (!shouldRender) return null;
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [position, onClose]);
 
   return (
     <div

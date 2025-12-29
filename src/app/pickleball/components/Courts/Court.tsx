@@ -8,7 +8,7 @@ type CourtProps = {
   courtId: number;
   gameType: GameType;
   assignments: PlayerAssignment[];
-  onPositionClick: (courtId: number, position: number) => void;
+  onPositionClick: (position: number) => void;
 };
 
 export default function Court({ courtId, gameType, assignments, onPositionClick }: CourtProps) {
@@ -107,14 +107,14 @@ export default function Court({ courtId, gameType, assignments, onPositionClick 
                 transition: 'all 120ms ease',
                 padding: '4px 8px',
               }}
-              onClick={() => onPositionClick(courtId, position)}
+              onClick={() => onPositionClick(position)}
               role="button"
               tabIndex={0}
               aria-label={`${playerName} - Click to ${assignment ? 'reassign' : 'assign'} player`}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  onPositionClick(courtId, position);
+                  onPositionClick(position);
                 }
               }}
             >
