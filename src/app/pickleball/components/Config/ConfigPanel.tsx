@@ -32,7 +32,7 @@ export default function ConfigPanel({ open, onClose }: Props) {
   const { subscribe } = form;
 
   useEffect(() => {
-    const subscription = subscribe({
+    return subscribe({
       formState: { values: true },
       callback: (data) => {
         if (data.name === 'players') {
@@ -40,7 +40,6 @@ export default function ConfigPanel({ open, onClose }: Props) {
         }
       },
     });
-    return () => subscription();
   }, [subscribe, updatePlayers]);
 
   const onSubmit = form.handleSubmit((data) => {

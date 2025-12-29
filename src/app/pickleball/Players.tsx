@@ -12,7 +12,7 @@ export const Players = () => {
   const [error, setError] = useState<string>('');
 
   const { control } = useFormContext<ConfigForm>();
-  const { fields, remove, append } = useFieldArray({ control, name: 'players' });
+  const { fields, remove, append } = useFieldArray({ control, name: 'players', keyName: 'keyId' });
   const { clearPlayerAssignments } = usePickleballContext();
 
   const onAddPlayer = () => {
@@ -30,9 +30,9 @@ export const Players = () => {
     setError('');
   };
 
-  const onRemovePlayer = (playerId: number) => {
+  const onRemovePlayer = (playerId: number, index: number) => {
     clearPlayerAssignments(playerId);
-    remove(playerId);
+    remove(index);
   };
 
   return (
@@ -60,12 +60,12 @@ export const Players = () => {
       {error && <Box sx={{ color: '#e11', mb: 1 }}>{error}</Box>}
 
       <Flex as="ul" direction="column" gap={1}>
-        {fields.map((pl) => (
+        {fields.map((pl, index) => (
           <Flex as="li" key={pl.id} justifyContent="space-between" sx={{ gap: 1 }}>
             <span>{pl.name}</span>
             <Button
               type="button"
-              onClick={() => onRemovePlayer(pl.id)}
+              onClick={() => onRemovePlayer(pl.id, index)}
               aria-label={`Delete ${pl.name}`}
             >
               x
