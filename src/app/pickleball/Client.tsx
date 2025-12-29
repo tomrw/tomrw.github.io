@@ -8,6 +8,7 @@ import PickleballContextProvider from './PickleballContext';
 import Button from '@/ds/Button';
 import Flex from '@/ds/Flex';
 import { ConfigForm } from './types';
+import Heading from '@/ds/Heading';
 
 const DEFAULT_PLAYERS = [
   { id: 1, name: 'Alice' },
@@ -31,7 +32,7 @@ export default function PickleballClient() {
   return (
     <PickleballContextProvider>
       <Flex justifyContent="space-between" sx={{ mb: 4 }}>
-        <h1>Pickleball</h1>
+        <Heading as="h1">Pickleball</Heading>
         <Flex gap={2}>
           <Button
             onClick={() => openPanel('config')}

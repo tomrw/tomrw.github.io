@@ -1,11 +1,13 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import { ConfigForm } from './types';
 import { usePickleballContext } from './PickleballContext';
 import Box from '@/ds/Box';
 import Button from '@/ds/Button';
 import Flex from '@/ds/Flex';
+import Input from '@/ds/Input';
+import Heading from '@/ds/Heading';
 
 type Props = {
   isOpen: boolean;
@@ -26,11 +28,46 @@ export default function PlayerSelectionDropdown({
 }: Props) {
   // Call all hooks at the top
   const [dropdownPosition, setDropdownPosition] = useState({ x: 0, y: 0 });
+  const [searchQuery, setSearchQuery] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const { assignments, getUnassignedPlayers } = usePickleballContext();
 
   const shouldRender = isOpen && position;
   const unassignedPlayers = getUnassignedPlayers(players);
+
+  // Filter players based on search query
+  const filteredPlayers = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return unassignedPlayers;
+    }
+
+    const query = searchQuery.toLowerCase().trim();
+    return unassignedPlayers.filter((player) => player.name.toLowerCase().includes(query));
+  }, [unassignedPlayers, searchQuery]);
+
+  // Auto-focus search input when dropdown opens and reset search
+  useEffect(() => {
+    if (shouldRender && searchInputRef.current) {
+      // Small delay to ensure dropdown is rendered
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 100);
+    }
+  }, [shouldRender, isOpen, position]);
+
+  // Handle search input changes
+  const handleSearchChange = useCallback((value: string) => {
+    setSearchQuery(value);
+  }, []);
+
+  // Clear search query
+  const clearSearch = useCallback(() => {
+    setSearchQuery('');
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, []);
 
   // Check if position is currently occupied
   const currentAssignment = position
@@ -117,21 +154,8 @@ export default function PlayerSelectionDropdown({
     >
       <Box sx={{ p: 3 }}>
         <Flex justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
-          <h3 style={{ margin: 0, fontSize: '16px' }}>
-            {currentAssignment ? 'Replace Player' : 'Assign Player'}
-          </h3>
-          <Button
-            type="button"
-            onClick={onClose}
-            sx={{
-              background: 'transparent',
-              border: 'none',
-              color: '#666',
-              fontSize: 18,
-              padding: '4px',
-              minWidth: 'auto',
-            }}
-          >
+          <Heading as="h3">{currentAssignment ? 'Replace Player' : 'Assign Player'}</Heading>
+          <Button type="button" onClick={onClose}>
             ×
           </Button>
         </Flex>
@@ -162,7 +186,66 @@ export default function PlayerSelectionDropdown({
           </Button>
         )}
 
-        {unassignedPlayers.length === 0 ? (
+        {/* Search Input */}
+        {unassignedPlayers.length > 0 && (
+          <Box sx={{ mb: 2, position: 'relative' }}>
+            <Input
+              ref={searchInputRef}
+              value={searchQuery}
+              onChange={handleSearchChange}
+              inputProps={{
+                placeholder: 'Search players...',
+                'aria-label': 'Search players',
+                style: {
+                  minHeight: '44px', // Mobile-friendly touch target
+                  fontSize: '16px', // Prevent zoom on iOS
+                  paddingRight: searchQuery ? '40px' : '12px',
+                },
+              }}
+              sx={{
+                border: '1px solid #ddd',
+                '&:focus': {
+                  borderColor: '#007acc',
+                  outline: '2px solid rgba(0, 122, 204, 0.2)',
+                  outlineOffset: '2px',
+                },
+              }}
+            />
+            {searchQuery && (
+              <Button
+                type="button"
+                onClick={clearSearch}
+                sx={{
+                  position: 'absolute',
+                  right: '8px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#666',
+                  fontSize: '16px',
+                  padding: '4px',
+                  minWidth: 'auto',
+                  minHeight: '32px',
+                  cursor: 'pointer',
+                  '&:hover': {
+                    color: '#333',
+                    bg: 'rgba(0, 0, 0, 0.05)',
+                  },
+                }}
+                aria-label="Clear search"
+              >
+                ×
+              </Button>
+            )}
+          </Box>
+        )}
+
+        {filteredPlayers.length === 0 && unassignedPlayers.length > 0 ? (
+          <Box sx={{ color: '#666', textAlign: 'center', py: 2 }}>
+            No players found matching &quot;{searchQuery}&quot;
+          </Box>
+        ) : unassignedPlayers.length === 0 ? (
           <Box sx={{ color: '#666', textAlign: 'center', py: 2 }}>
             {currentAssignment ? 'No players available for replacement' : 'No unassigned players'}
           </Box>
@@ -170,9 +253,14 @@ export default function PlayerSelectionDropdown({
           <Box>
             <Box sx={{ fontSize: '14px', color: '#666', mb: 2 }}>
               {currentAssignment ? 'Replace with:' : 'Assign player:'}
+              {searchQuery && (
+                <Box sx={{ fontSize: '12px', color: '#999', mt: 1 }}>
+                  {filteredPlayers.length} of {unassignedPlayers.length} players
+                </Box>
+              )}
             </Box>
             <Flex direction="column" gap={1}>
-              {unassignedPlayers.map((player) => (
+              {filteredPlayers.map((player) => (
                 <Button
                   key={player.id}
                   type="button"
