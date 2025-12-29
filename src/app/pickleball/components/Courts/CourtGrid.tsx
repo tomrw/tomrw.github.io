@@ -1,15 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import { usePickleballContext } from '../../PickleballContext';
-import { ConfigForm } from '../../types';
 import Box from '@/ds/Box/Box';
 import Court from './Court';
 import PlayerSelectionDropdown from './PlayerSelectionDropdown';
 
-type CourtGridProps = {
-  players: ConfigForm['players'];
-};
-
-export default function CourtGrid({ players }: CourtGridProps) {
+export default function CourtGrid() {
   const { courts, gameType, assignments, assignPlayerToCourt, removePlayerFromCourt } =
     usePickleballContext();
 
@@ -87,19 +82,16 @@ export default function CourtGrid({ players }: CourtGridProps) {
               courtId={courtId}
               gameType={gameType}
               assignments={courtAssignments}
-              players={players}
               onPositionClick={handlePositionClick}
             />
           );
         })}
       </Box>
 
-      {/* Player Selection Dropdown */}
       <PlayerSelectionDropdown
         isOpen={dropdownState.isOpen}
         position={dropdownState.position}
         onClose={closeDropdown}
-        players={players}
         onSelectPlayer={handleSelectPlayer}
         onRemovePlayer={handleRemovePlayer}
       />

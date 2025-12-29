@@ -1,19 +1,18 @@
 'use client';
 
 import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
-import { ConfigForm } from '../../types';
 import { usePickleballContext } from '../../PickleballContext';
 import Box from '@/ds/Box';
 import Button from '@/ds/Button';
 import Flex from '@/ds/Flex';
 import Input from '@/ds/Input';
 import Heading from '@/ds/Heading';
+import { usePlayers } from '../../hooks/usePlayers';
 
 type Props = {
   isOpen: boolean;
   position: { courtId: number; position: number } | null;
   onClose: () => void;
-  players: ConfigForm['players'];
   onSelectPlayer: (playerId: number) => void;
   onRemovePlayer: (courtId: number, position: number) => void;
 };
@@ -22,7 +21,6 @@ export default function PlayerSelectionDropdown({
   isOpen,
   position,
   onClose,
-  players,
   onSelectPlayer,
   onRemovePlayer,
 }: Props) {
@@ -34,9 +32,9 @@ export default function PlayerSelectionDropdown({
   const { assignments, getUnassignedPlayers } = usePickleballContext();
 
   const shouldRender = isOpen && position;
+  const { players } = usePlayers();
   const unassignedPlayers = getUnassignedPlayers(players);
 
-  // Filter players based on search query
   const filteredPlayers = useMemo(() => {
     if (!searchQuery.trim()) {
       return unassignedPlayers;
@@ -162,18 +160,7 @@ export default function PlayerSelectionDropdown({
         )}
 
         {currentAssignment && (
-          <Button
-            type="button"
-            onClick={handleRemovePlayer}
-            sx={{
-              width: '100%',
-              bg: '#dc3545',
-              color: '#fff',
-              border: '1px solid #dc3545',
-              mb: 2,
-              padding: '12px',
-            }}
-          >
+          <Button type="button" full onClick={handleRemovePlayer}>
             Remove Player
           </Button>
         )}

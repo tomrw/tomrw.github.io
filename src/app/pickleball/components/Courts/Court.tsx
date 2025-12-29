@@ -1,27 +1,19 @@
 import React, { useMemo } from 'react';
-import { GameType, PlayerAssignment, ConfigForm } from '../../types';
+import { GameType, PlayerAssignment } from '../../types';
 import Box from '@/ds/Box/Box';
 import Heading from '@/ds/Heading';
+import { usePlayers } from '../../hooks/usePlayers';
 
 type CourtProps = {
   courtId: number;
   gameType: GameType;
   assignments: PlayerAssignment[];
-  players: ConfigForm['players'];
   onPositionClick: (courtId: number, position: number) => void;
-  // onPositionHover: (courtId: number, position: number | null) => void;
-  // isHovered?: boolean;
-  // hoveredPosition?: number | null;
 };
 
-export default function Court({
-  courtId,
-  gameType,
-  assignments,
-  players,
-  onPositionClick,
-}: CourtProps) {
-  // Helper function to get player name by ID
+export default function Court({ courtId, gameType, assignments, onPositionClick }: CourtProps) {
+  const { players } = usePlayers();
+
   const getPlayerName = (playerId: number) => {
     const player = players.find((p) => p.id === playerId);
     return player?.name || `Player ${playerId}`;
@@ -48,11 +40,9 @@ export default function Court({
 
   return (
     <Box>
-      <Box>
-        <Heading as="h4" sx={{ mb: 1 }}>
-          Court {courtId}
-        </Heading>
-      </Box>
+      <Heading as="h4" sx={{ mb: 1 }}>
+        Court {courtId}
+      </Heading>
       <Box
         sx={{
           position: 'relative',

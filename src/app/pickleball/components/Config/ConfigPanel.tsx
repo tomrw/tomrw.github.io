@@ -1,34 +1,26 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Players } from './Players';
-import SidePanel from '../../ds/SidePanel/SidePanel';
+import { Players } from '../../Players';
+import SidePanel from '../../../../ds/SidePanel/SidePanel';
 import { FormProvider, useForm } from 'react-hook-form';
-import Courts from './Courts';
+import Courts from '../../Courts';
 import Button from '@/ds/Button';
-import { ConfigForm } from './types';
-import { usePickleballContext } from './PickleballContext';
-import { DEFAULT_COURT_COUNT, DEFAULT_GAME_TYPE } from './constants';
-import { GameType } from './GameType';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { ConfigForm } from '../../types';
+import { usePickleballContext } from '../../PickleballContext';
+import { DEFAULT_COURT_COUNT, DEFAULT_GAME_TYPE } from '../../constants';
+import { GameType } from '../../GameType';
 import Box from '@/ds/Box';
+import { usePlayers } from '../../hooks/usePlayers';
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  onPlayersChange: (players: ConfigForm['players']) => void;
 };
 
-const DEFAULT_PLAYERS = [
-  { id: 1, name: 'Alice' },
-  { id: 2, name: 'Bob' },
-];
-
-const PLAYERS_STORAGE_KEY = 'pickleball-players';
-
-export default function ConfigPanel({ open, onClose, onPlayersChange }: Props) {
+export default function ConfigPanel({ open, onClose }: Props) {
   const { updateConfig } = usePickleballContext();
-  const [players, updatePlayers] = useLocalStorage(PLAYERS_STORAGE_KEY, DEFAULT_PLAYERS);
+  const { players, updatePlayers } = usePlayers();
 
   const form = useForm<ConfigForm>({
     defaultValues: {
@@ -45,12 +37,11 @@ export default function ConfigPanel({ open, onClose, onPlayersChange }: Props) {
       callback: (data) => {
         if (data.name === 'players') {
           updatePlayers(data.values.players);
-          onPlayersChange(data.values.players);
         }
       },
     });
     return () => subscription();
-  }, [subscribe, updatePlayers, onPlayersChange]);
+  }, [subscribe, updatePlayers]);
 
   const onSubmit = form.handleSubmit((data) => {
     updateConfig(data);

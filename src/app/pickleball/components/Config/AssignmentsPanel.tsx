@@ -1,20 +1,20 @@
 'use client';
 
 import { useState } from 'react';
-import { ConfigForm } from './types';
-import { usePickleballContext } from './PickleballContext';
-import SidePanel from '../../ds/SidePanel/SidePanel';
+
+import { usePickleballContext } from '../../PickleballContext';
+import SidePanel from '../../../../ds/SidePanel/SidePanel';
 import Button from '@/ds/Button';
 import Flex from '@/ds/Flex';
 import Box from '@/ds/Box';
+import { usePlayers } from '../../hooks/usePlayers';
 
 type Props = {
   open: boolean;
   onClose: () => void;
-  players: ConfigForm['players'];
 };
 
-export default function AssignmentsPanel({ open, onClose, players }: Props) {
+export default function AssignmentsPanel({ open, onClose }: Props) {
   const [selectedPlayer, setSelectedPlayer] = useState<number | null>(null);
   const [assignmentError, setAssignmentError] = useState<string>('');
 
@@ -27,7 +27,7 @@ export default function AssignmentsPanel({ open, onClose, players }: Props) {
     clearAllAssignments,
     getUnassignedPlayers,
   } = usePickleballContext();
-
+  const { players } = usePlayers();
   const unassignedPlayers = getUnassignedPlayers(players);
 
   const handlePlayerSelect = (playerId: number) => {
