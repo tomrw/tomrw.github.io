@@ -7,12 +7,12 @@ import Button from '@/ds/Button';
 import Flex from '@/ds/Flex';
 import Input from '@/ds/Input';
 import Heading from '@/ds/Heading';
-import { usePlayers } from '../../hooks/usePlayers';
+import { usePlayersContext } from '../../contexts/PlayersContext';
 
 type Props = {
   position: { courtId: number; position: number };
   onClose: () => void;
-  onSelectPlayer: (playerId: number) => void;
+  onSelectPlayer: (playerName: string) => void;
   onRemovePlayer: (courtId: number, position: number) => void;
 };
 
@@ -28,7 +28,7 @@ export default function PlayerSelectionDropdown({
   const searchInputRef = useRef<HTMLInputElement>(null);
   const { assignments, getUnassignedPlayers } = usePickleballContext();
 
-  const { players } = usePlayers();
+  const { players } = usePlayersContext();
   const unassignedPlayers = getUnassignedPlayers(players);
 
   const filteredPlayers = useMemo(() => {
@@ -37,7 +37,7 @@ export default function PlayerSelectionDropdown({
     }
 
     const query = searchQuery.toLowerCase().trim();
-    return unassignedPlayers.filter((player) => player.name.toLowerCase().includes(query));
+    return unassignedPlayers.filter((playerName) => playerName.toLowerCase().includes(query));
   }, [unassignedPlayers, searchQuery]);
 
   useEffect(() => {
@@ -56,8 +56,8 @@ export default function PlayerSelectionDropdown({
     ? assignments[position.courtId]?.find((a) => a.position === position.position)
     : null;
 
-  const handleSelectPlayer = (playerId: number) => {
-    onSelectPlayer(playerId);
+  const handleSelectPlayer = (playerName: string) => {
+    onSelectPlayer(playerName);
     onClose();
   };
 
@@ -134,9 +134,7 @@ export default function PlayerSelectionDropdown({
         {currentAssignment && (
           <Box sx={{ mb: 2, p: 2, bg: '#f8f9fa', borderRadius: 1 }}>
             <Box sx={{ fontSize: '14px', color: '#666', mb: 1 }}>Current Player:</Box>
-            <Box sx={{ fontSize: '16px', fontWeight: 'bold' }}>
-              {players.find((p) => p.id === currentAssignment.playerId)?.name}
-            </Box>
+            <Box sx={{ fontSize: '16px', fontWeight: 'bold' }}>{currentAssignment.playerName}</Box>
           </Box>
         )}
 
@@ -179,11 +177,11 @@ export default function PlayerSelectionDropdown({
               )}
             </Box>
             <Flex direction="column" gap={1}>
-              {filteredPlayers.map((player) => (
+              {filteredPlayers.map((playerName) => (
                 <Button
-                  key={player.id}
+                  key={playerName}
                   type="button"
-                  onClick={() => handleSelectPlayer(player.id)}
+                  onClick={() => handleSelectPlayer(playerName)}
                   sx={{
                     width: '100%',
                     textAlign: 'left',
@@ -199,7 +197,7 @@ export default function PlayerSelectionDropdown({
                     },
                   }}
                 >
-                  {player.name}
+                  {playerName}
                 </Button>
               ))}
             </Flex>

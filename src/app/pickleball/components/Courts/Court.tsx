@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { GameType, PlayerAssignment } from '../../types';
 import Box from '@/ds/Box/Box';
 import Heading from '@/ds/Heading';
-import { usePlayers } from '../../hooks/usePlayers';
 
 type CourtProps = {
   courtId: number;
@@ -12,13 +11,6 @@ type CourtProps = {
 };
 
 export default function Court({ courtId, gameType, assignments, onPositionClick }: CourtProps) {
-  const { players } = usePlayers();
-
-  const getPlayerName = (playerId: number) => {
-    const player = players.find((p) => p.id === playerId);
-    return player?.name || `Player ${playerId}`;
-  };
-
   // Calculate position layout based on game type
   const positionLayout = useMemo(() => {
     if (gameType === 'singles') {
@@ -86,9 +78,7 @@ export default function Court({ courtId, gameType, assignments, onPositionClick 
         {/* Player Positions */}
         {positionLayout.slice(0, maxPosition + 1).map((layout, position) => {
           const assignment = assignments.find((a) => a.position === position);
-          const playerName = assignment
-            ? getPlayerName(assignment.playerId)
-            : `Position ${position + 1}`;
+          const playerName = assignment ? assignment.playerName : `Position ${position + 1}`;
 
           return (
             <Box

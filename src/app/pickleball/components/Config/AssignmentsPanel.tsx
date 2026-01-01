@@ -7,7 +7,7 @@ import SidePanel from '../../../../ds/SidePanel/SidePanel';
 import Button from '@/ds/Button';
 import Flex from '@/ds/Flex';
 import Box from '@/ds/Box';
-import { usePlayers } from '../../hooks/usePlayers';
+import { usePlayersContext } from '../../contexts/PlayersContext';
 
 type Props = {
   open: boolean;
@@ -15,7 +15,7 @@ type Props = {
 };
 
 export default function AssignmentsPanel({ open, onClose }: Props) {
-  const [selectedPlayer, setSelectedPlayer] = useState<number | null>(null);
+  const [selectedPlayer, setSelectedPlayer] = useState<string | null>(null);
   const [assignmentError, setAssignmentError] = useState<string>('');
 
   const {
@@ -27,11 +27,11 @@ export default function AssignmentsPanel({ open, onClose }: Props) {
     clearAllAssignments,
     getUnassignedPlayers,
   } = usePickleballContext();
-  const { players } = usePlayers();
+  const { players } = usePlayersContext();
   const unassignedPlayers = getUnassignedPlayers(players);
 
-  const handlePlayerSelect = (playerId: number) => {
-    setSelectedPlayer(playerId === selectedPlayer ? null : playerId);
+  const handlePlayerSelect = (playerName: string) => {
+    setSelectedPlayer(playerName === selectedPlayer ? null : playerName);
     setAssignmentError('');
   };
 
@@ -55,15 +55,10 @@ export default function AssignmentsPanel({ open, onClose }: Props) {
     setAssignmentError('');
   };
 
-  const getPlayerName = (playerId: number) => {
-    const player = players.find((p) => p.id === playerId);
-    return player?.name || `Player ${playerId}`;
-  };
-
   const getPlayerAtPosition = (courtId: number, position: number) => {
     const courtAssignments = assignments[courtId] || [];
     const assignment = courtAssignments.find((a) => a.position === position);
-    return assignment ? getPlayerName(assignment.playerId) : null;
+    return assignment ? assignment.playerName : null;
   };
 
   const getPositionLabel = (position: number) => {
@@ -111,23 +106,23 @@ export default function AssignmentsPanel({ open, onClose }: Props) {
             <Box sx={{ color: '#666', fontSize: '14px' }}>All players assigned</Box>
           ) : (
             <Flex as="ul" direction="column" gap={1} sx={{ m: 0, p: 0, listStyle: 'none' }}>
-              {unassignedPlayers.map((player) => (
+              {unassignedPlayers.map((playerName) => (
                 <Flex
                   as="li"
-                  key={player.id}
+                  key={playerName}
                   sx={{
                     p: 1,
-                    border: selectedPlayer === player.id ? '2px solid #007acc' : '1px solid #ddd',
+                    border: selectedPlayer === playerName ? '2px solid #007acc' : '1px solid #ddd',
                     borderRadius: '4px',
                     cursor: 'pointer',
-                    bg: selectedPlayer === player.id ? '#f0f8ff' : 'transparent',
+                    bg: selectedPlayer === playerName ? '#f0f8ff' : 'transparent',
                     '&:hover': {
-                      bg: selectedPlayer === player.id ? '#f0f8ff' : '#f5f5f5',
+                      bg: selectedPlayer === playerName ? '#f0f8ff' : '#f5f5f5',
                     },
                   }}
-                  onClick={() => handlePlayerSelect(player.id)}
+                  onClick={() => handlePlayerSelect(playerName)}
                 >
-                  {player.name}
+                  {playerName}
                 </Flex>
               ))}
             </Flex>

@@ -1,7 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
-import { Players } from '../../Players';
 import SidePanel from '../../../../ds/SidePanel/SidePanel';
 import { FormProvider, useForm } from 'react-hook-form';
 import Courts from '../../Courts';
@@ -11,7 +9,6 @@ import { usePickleballContext } from '../../PickleballContext';
 import { DEFAULT_COURT_COUNT, DEFAULT_GAME_TYPE } from '../../constants';
 import { GameType } from '../../GameType';
 import Box from '@/ds/Box';
-import { usePlayers } from '../../hooks/usePlayers';
 
 type Props = {
   open: boolean;
@@ -20,27 +17,14 @@ type Props = {
 
 export default function ConfigPanel({ open, onClose }: Props) {
   const { updateConfig } = usePickleballContext();
-  const { players, updatePlayers } = usePlayers();
 
   const form = useForm<ConfigForm>({
     defaultValues: {
-      players: players,
+      players: [],
       courts: DEFAULT_COURT_COUNT,
       gameType: DEFAULT_GAME_TYPE,
     },
   });
-  const { subscribe } = form;
-
-  useEffect(() => {
-    return subscribe({
-      formState: { values: true },
-      callback: (data) => {
-        if (data.name === 'players') {
-          updatePlayers(data.values.players);
-        }
-      },
-    });
-  }, [subscribe, updatePlayers]);
 
   const onSubmit = form.handleSubmit((data) => {
     updateConfig(data);
@@ -72,10 +56,6 @@ export default function ConfigPanel({ open, onClose }: Props) {
 
           <section>
             <Courts />
-          </section>
-
-          <section>
-            <Players />
           </section>
 
           <Button full type="submit">

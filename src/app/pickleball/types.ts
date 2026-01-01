@@ -1,14 +1,14 @@
 export type GameType = 'singles' | 'doubles';
 
 export type ConfigForm = {
-  players: { id: number; name: string }[];
+  players: string[];
   courts: number;
   gameType: GameType;
 };
 
 export type PlayerAssignment = {
   courtId: number;
-  playerId: number;
+  playerName: string;
   position: number; // 0-3 for doubles, 0-1 for singles
 };
 

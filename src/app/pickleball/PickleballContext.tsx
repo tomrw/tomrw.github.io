@@ -22,13 +22,13 @@ type PickleballContext = {
   updateConfig: (data: ConfigForm) => void;
   assignPlayerToCourt: (
     courtId: number,
-    playerId: number,
+    playerName: string,
     position: number,
   ) => AssignmentValidation;
   removePlayerFromCourt: (courtId: number, position: number) => void;
   clearAllAssignments: () => void;
-  clearPlayerAssignments: (playerId: number) => void;
-  getPlayerAssignments: (playerId: number) => PlayerAssignment[];
+  clearPlayerAssignments: (playerName: string) => void;
+  getPlayerAssignments: (playerName: string) => PlayerAssignment[];
   getUnassignedPlayers: (allPlayers: ConfigForm['players']) => ConfigForm['players'];
 };
 
@@ -66,7 +66,7 @@ export default function PickleballContextProvider({ children }: Props) {
   );
 
   const assignPlayerToCourt = useCallback(
-    (courtId: number, playerId: number, position: number): AssignmentValidation => {
+    (courtId: number, playerName: string, position: number): AssignmentValidation => {
       // Validate court exists
       if (courtId < 1 || courtId > courts) {
         return { isValid: false, error: 'Invalid court number' };
@@ -81,7 +81,7 @@ export default function PickleballContextProvider({ children }: Props) {
       // Check if player is already assigned elsewhere
       const existingAssignment = Object.values(assignments)
         .flat()
-        .find((a) => a.playerId === playerId);
+        .find((player) => player.playerName === playerName);
       if (existingAssignment) {
         return { isValid: false, error: 'Player is already assigned to another position' };
       }
@@ -99,7 +99,7 @@ export default function PickleballContextProvider({ children }: Props) {
         if (!newAssignments[courtId]) {
           newAssignments[courtId] = [];
         }
-        newAssignments[courtId] = [...newAssignments[courtId], { courtId, playerId, position }];
+        newAssignments[courtId] = [...newAssignments[courtId], { courtId, playerName, position }];
         return newAssignments;
       });
 
@@ -129,11 +129,11 @@ export default function PickleballContextProvider({ children }: Props) {
   }, [setAssignments]);
 
   const clearPlayerAssignments = useCallback(
-    (playerId: number) => {
+    (playerName: string) => {
       setAssignments((prev) => {
         const newAssignments: CourtAssignments = {};
         Object.entries(prev).forEach(([courtId, courtAssignments]) => {
-          const filteredAssignments = courtAssignments.filter((a) => a.playerId !== playerId);
+          const filteredAssignments = courtAssignments.filter((a) => a.playerName !== playerName);
           if (filteredAssignments.length > 0) {
             newAssignments[parseInt(courtId)] = filteredAssignments;
           }
@@ -145,22 +145,22 @@ export default function PickleballContextProvider({ children }: Props) {
   );
 
   const getPlayerAssignments = useCallback(
-    (playerId: number): PlayerAssignment[] => {
+    (playerName: string): PlayerAssignment[] => {
       return Object.values(assignments)
         .flat()
-        .filter((a) => a.playerId === playerId);
+        .filter((a) => a.playerName === playerName);
     },
     [assignments],
   );
 
   const getUnassignedPlayers = useCallback(
     (allPlayers: ConfigForm['players']): ConfigForm['players'] => {
-      const assignedPlayerIds = new Set(
+      const assignedPlayerNames = new Set(
         Object.values(assignments)
           .flat()
-          .map((a) => a.playerId),
+          .map((a) => a.playerName),
       );
-      return allPlayers.filter((p) => !assignedPlayerIds.has(p.id));
+      return allPlayers.filter((playerName) => !assignedPlayerNames.has(playerName));
     },
     [assignments],
   );

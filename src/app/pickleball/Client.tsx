@@ -1,6 +1,7 @@
 'use client';
 
 import PickleballContextProvider from './PickleballContext';
+import PlayersProvider from './contexts/PlayersContext';
 import Flex from '@/ds/Flex';
 import Heading from '@/ds/Heading';
 import CourtGrid from './components/Courts/CourtGrid';
@@ -8,12 +9,14 @@ import GameConfig from './components/Config/GameConfig';
 
 export default function PickleballClient() {
   return (
-    <PickleballContextProvider>
-      <Flex justifyContent="space-between" sx={{ mb: 4 }}>
-        <Heading as="h1">Pickleball</Heading>
-        <GameConfig />
-      </Flex>
-      <CourtGrid />
-    </PickleballContextProvider>
+    <PlayersProvider>
+      <PickleballContextProvider>
+        <Flex justifyContent="space-between" sx={{ mb: 4 }}>
+          <Heading as="h1">Pickleball</Heading>
+          <GameConfig />
+        </Flex>
+        <CourtGrid />
+      </PickleballContextProvider>
+    </PlayersProvider>
   );
 }
