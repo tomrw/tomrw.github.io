@@ -29,7 +29,7 @@ type PickleballContext = {
   clearAllAssignments: () => void;
   clearPlayerAssignments: (playerName: string) => void;
   getPlayerAssignments: (playerName: string) => PlayerAssignment[];
-  getUnassignedPlayers: (allPlayers: ConfigForm['players']) => ConfigForm['players'];
+  getUnassignedPlayers: (players: string[]) => string[];
 };
 
 const PickleballContext = React.createContext<PickleballContext>({
@@ -154,7 +154,7 @@ export default function PickleballContextProvider({ children }: Props) {
   );
 
   const getUnassignedPlayers = useCallback(
-    (allPlayers: ConfigForm['players']): ConfigForm['players'] => {
+    (allPlayers: string[]): string[] => {
       const assignedPlayerNames = new Set(
         Object.values(assignments)
           .flat()

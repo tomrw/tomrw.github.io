@@ -43,7 +43,7 @@ export default function PlayersProvider({ children }: PropsWithChildren) {
       updatePlayers([...players, trimmedName]);
       return { success: true };
     },
-    [players, updatePlayers],
+    [players, isDuplicateName, updatePlayers],
   );
 
   const removePlayer = useCallback(

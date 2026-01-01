@@ -20,7 +20,6 @@ export default function ConfigPanel({ open, onClose }: Props) {
 
   const form = useForm<ConfigForm>({
     defaultValues: {
-      players: [],
       courts: DEFAULT_COURT_COUNT,
       gameType: DEFAULT_GAME_TYPE,
     },

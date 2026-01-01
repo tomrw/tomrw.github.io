@@ -1,7 +1,6 @@
 export type GameType = 'singles' | 'doubles';
 
 export type ConfigForm = {
-  players: string[];
   courts: number;
   gameType: GameType;
 };
