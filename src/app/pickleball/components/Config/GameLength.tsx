@@ -21,8 +21,9 @@ export default function GameLength() {
 
   return (
     <Flex direction="column" gap={1}>
-      <Label>Game Length</Label>
+      <Label htmlFor="game-length">Game Length</Label>
       <TimePicker
+        id="game-length"
         value={gameLengthToDate(gameLength)}
         onChange={(date) => {
           onChange(date ? parseGameLength(date) : null);

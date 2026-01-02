@@ -3,6 +3,7 @@ import { SxProp, useTransformSx } from '../sx';
 
 type LabelProps = {
   children: React.ReactNode;
+  htmlFor: string;
   sx?: SxProp;
 };
 

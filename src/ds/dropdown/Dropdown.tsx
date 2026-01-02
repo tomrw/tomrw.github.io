@@ -1,6 +1,7 @@
 import { useId } from 'react';
 import { SxProp, useTransformSx } from '../sx';
 import Flex from '../Flex';
+import Label from '../Label';
 
 type Value = string | number;
 type Props = {
@@ -20,10 +21,8 @@ export default function Dropdown({ label, options, onChange, value, sx }: Props)
   });
 
   return (
-    <Flex sx={{ flexDirection: 'column', gap: 1 }}>
-      <label htmlFor={id} style={{ fontWeight: 600 }}>
-        {label}
-      </label>
+    <Flex direction="column" gap={1}>
+      <Label htmlFor={id}>{label}</Label>
       <select id={id} value={value} onChange={(e) => onChange(e.target.value)} style={sxStyle}>
         {options.map(({ value, label }) => (
           <option key={value} value={value}>
