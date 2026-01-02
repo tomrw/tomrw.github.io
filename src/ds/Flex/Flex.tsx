@@ -3,7 +3,7 @@ import { SxProp, useTransformSx } from '../sx';
 
 type FlexProps = React.HTMLAttributes<HTMLDivElement> & {
   as?: React.ElementType;
-  gap?: number;
+  gap?: number | number[];
   justifyContent?: React.CSSProperties['justifyContent'];
   alignItems?: React.CSSProperties['alignItems'];
   direction?: React.CSSProperties['flexDirection'];

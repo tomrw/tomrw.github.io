@@ -1,70 +1,59 @@
 'use client';
 
-import { Controller, useFormContext } from 'react-hook-form';
+import { useController, useFormContext } from 'react-hook-form';
 import { GameConfig } from './types';
 import Box from '@/ds/Box';
+import Heading from '@/ds/Heading';
+import Flex from '@/ds/Flex';
 
 export const GameType = () => {
   const { control } = useFormContext<GameConfig>();
+  const {
+    field: { onChange, value },
+  } = useController({
+    control,
+    name: 'gameType',
+  });
 
   return (
-    <Controller
-      name="gameType"
-      control={control}
-      render={({ field }) => (
+    <Flex direction="column" gap={1}>
+      <Heading as="h4">Game Type</Heading>
+      <Flex direction="row" gap={[0.5, 1]}>
         <Box
           sx={{
             display: 'flex',
-            gap: 1.5,
             alignItems: 'center',
+            gap: 0.5,
+            cursor: 'pointer',
           }}
+          as="label"
         >
-          <Box sx={{ fontWeight: 500, minWidth: [0, 80] }} as="label">
-            Game Type:
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              gap: [0.5, 1],
-            }}
-          >
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 0.5,
-                cursor: 'pointer',
-              }}
-              as="label"
-            >
-              <input
-                type="radio"
-                value="singles"
-                checked={field.value === 'singles'}
-                onChange={() => field.onChange('singles')}
-              />
-              Singles
-            </Box>
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 0.5,
-                cursor: 'pointer',
-              }}
-              as="label"
-            >
-              <input
-                type="radio"
-                value="doubles"
-                checked={field.value === 'doubles'}
-                onChange={() => field.onChange('doubles')}
-              />
-              Doubles
-            </Box>
-          </Box>
+          <input
+            type="radio"
+            value="singles"
+            checked={value === 'singles'}
+            onChange={() => onChange('singles')}
+          />
+          Singles
         </Box>
-      )}
-    />
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 0.5,
+            cursor: 'pointer',
+          }}
+          as="label"
+        >
+          <input
+            type="radio"
+            value="doubles"
+            checked={value === 'doubles'}
+            onChange={() => onChange('doubles')}
+          />
+          Doubles
+        </Box>
+      </Flex>
+    </Flex>
   );
 };
