@@ -9,6 +9,7 @@ import Box from '@/ds/Box';
 import { usePlayersContext } from '../../contexts/PlayersContext';
 import Heading from '@/ds/Heading/Heading';
 import SidePanel from '@/ds/SidePanel';
+import { UnassignedPlayers } from './Assignments/UnassignedPlayers';
 
 type Props = {
   open: boolean;
@@ -26,16 +27,9 @@ export default function AssignmentsPanel({ open, onClose }: Props) {
     assignPlayerToCourt,
     removePlayerFromCourt,
     clearAllAssignments,
-    getUnassignedPlayers,
     randomizeAllAssignments,
   } = usePickleballContext();
   const { players } = usePlayersContext();
-  const unassignedPlayers = getUnassignedPlayers(players);
-
-  const handlePlayerSelect = (playerName: string) => {
-    setSelectedPlayer(playerName === selectedPlayer ? null : playerName);
-    setAssignmentError('');
-  };
 
   const handlePositionClick = (courtId: number, position: number) => {
     if (!selectedPlayer) {
@@ -79,9 +73,7 @@ export default function AssignmentsPanel({ open, onClose }: Props) {
   };
 
   const maxPositions = gameType === 'singles' ? 2 : 4;
-  const totalPositions = courts * maxPositions;
   const assignedCount = Object.values(assignments).flat().length;
-  const unassignedCount = unassignedPlayers.length;
 
   return (
     <SidePanel
@@ -101,41 +93,7 @@ export default function AssignmentsPanel({ open, onClose }: Props) {
           maxHeight: 'calc(100vh - 40px)', // Account for panel padding
         }}
       >
-        {/* Status */}
-        <Box sx={{ fontSize: '14px', color: '#666' }}>
-          {assignedCount} of {totalPositions} positions assigned • {unassignedCount} players
-          unassigned
-        </Box>
-
-        {/* Unassigned Players */}
-        <Box>
-          <h4 style={{ fontSize: '16px', marginBottom: '8px' }}>Unassigned Players</h4>
-          {unassignedPlayers.length === 0 ? (
-            <Box sx={{ color: '#666', fontSize: '14px' }}>All players assigned</Box>
-          ) : (
-            <Flex as="ul" direction="column" gap={1} sx={{ m: 0, p: 0, listStyle: 'none' }}>
-              {unassignedPlayers.map((playerName) => (
-                <Flex
-                  as="li"
-                  key={playerName}
-                  sx={{
-                    p: 1,
-                    border: selectedPlayer === playerName ? '2px solid #007acc' : '1px solid #ddd',
-                    borderRadius: '4px',
-                    cursor: 'pointer',
-                    bg: selectedPlayer === playerName ? '#f0f8ff' : 'transparent',
-                    '&:hover': {
-                      bg: selectedPlayer === playerName ? '#f0f8ff' : '#f5f5f5',
-                    },
-                  }}
-                  onClick={() => handlePlayerSelect(playerName)}
-                >
-                  {playerName}
-                </Flex>
-              ))}
-            </Flex>
-          )}
-        </Box>
+        <UnassignedPlayers />
 
         <Box>
           <Box sx={{ flex: 1, overflowY: 'auto' }}>
