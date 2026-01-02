@@ -5,8 +5,12 @@ import Court from './Court';
 import PlayerSelectionDropdown from './PlayerSelectionDropdown';
 
 export default function CourtGrid() {
-  const { courts, gameType, assignments, assignPlayerToCourt, removePlayerFromCourt } =
-    usePickleballContext();
+  const {
+    gameConfig: { courts, gameType },
+    assignments,
+    assignPlayerToCourt,
+    removePlayerFromCourt,
+  } = usePickleballContext();
 
   const [dropdownState, setDropdownState] = useState<{
     courtId: number;

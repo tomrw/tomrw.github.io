@@ -4,11 +4,12 @@ import SidePanel from '@/ds/SidePanel';
 import { FormProvider, useForm } from 'react-hook-form';
 import Courts from '../../Courts';
 import Button from '@/ds/Button';
-import { ConfigForm } from '../../types';
+import { GameConfig } from '../../types';
 import { usePickleballContext } from '../../PickleballContext';
-import { DEFAULT_COURT_COUNT, DEFAULT_GAME_TYPE } from '../../constants';
+import { DEFAULT_GAME_CONFIG } from '../../constants';
 import { GameType } from '../../GameType';
 import Box from '@/ds/Box';
+import GameLength from './GameLength';
 
 type Props = {
   open: boolean;
@@ -18,11 +19,8 @@ type Props = {
 export default function ConfigPanel({ open, onClose }: Props) {
   const { updateConfig } = usePickleballContext();
 
-  const form = useForm<ConfigForm>({
-    defaultValues: {
-      courts: DEFAULT_COURT_COUNT,
-      gameType: DEFAULT_GAME_TYPE,
-    },
+  const form = useForm<GameConfig>({
+    defaultValues: DEFAULT_GAME_CONFIG,
   });
 
   const onSubmit = form.handleSubmit((data) => {
@@ -44,6 +42,10 @@ export default function ConfigPanel({ open, onClose }: Props) {
         >
           <section>
             <GameType />
+          </section>
+
+          <section>
+            <GameLength />
           </section>
 
           <section>

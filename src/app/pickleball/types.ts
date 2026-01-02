@@ -1,8 +1,14 @@
 export type GameType = 'singles' | 'doubles';
 
-export type ConfigForm = {
+export type GameLength = {
+  minutes: number;
+  seconds: number;
+};
+
+export type GameConfig = {
   courts: number;
   gameType: GameType;
+  gameLength: GameLength;
 };
 
 export type PlayerAssignment = {

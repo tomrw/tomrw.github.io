@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useCallback, useState } from 'react';
-import { ConfigForm, GameType, CourtAssignments, PlayerAssignment } from './types';
-import { DEFAULT_COURT_COUNT, DEFAULT_GAME_TYPE } from './constants';
+import { GameConfig, CourtAssignments, PlayerAssignment } from './types';
+import { DEFAULT_GAME_CONFIG } from './constants';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { assignPlayersRandomly } from './utils/assignmentUtils';
 
@@ -11,10 +11,9 @@ type Props = {
 };
 
 type PickleballContext = {
-  courts: number;
-  gameType: GameType;
+  gameConfig: GameConfig;
   assignments: CourtAssignments;
-  updateConfig: (data: ConfigForm) => void;
+  updateConfig: (data: GameConfig) => void;
   assignPlayerToCourt: (courtId: number, playerName: string, position: number) => void;
   removePlayerFromCourt: (courtId: number, position: number) => void;
   clearAllAssignments: () => void;
@@ -25,8 +24,7 @@ type PickleballContext = {
 };
 
 const PickleballContext = React.createContext<PickleballContext>({
-  courts: DEFAULT_COURT_COUNT,
-  gameType: DEFAULT_GAME_TYPE,
+  gameConfig: DEFAULT_GAME_CONFIG,
   assignments: {},
   updateConfig: () => {},
   assignPlayerToCourt: () => ({ isValid: false, error: 'Not implemented' }),
@@ -39,22 +37,20 @@ const PickleballContext = React.createContext<PickleballContext>({
 });
 
 export default function PickleballContextProvider({ children }: Props) {
-  const [courts, setCourts] = useState(DEFAULT_COURT_COUNT);
-  const [gameType, setGameType] = useState<GameType>(DEFAULT_GAME_TYPE);
+  const [gameConfig, setGameConfig] = useState<GameConfig>(DEFAULT_GAME_CONFIG);
   const [assignments, setAssignments] = useLocalStorage<CourtAssignments>(
     'pickleball-assignments',
     {},
   );
 
   const updateConfig = useCallback(
-    (data: ConfigForm) => {
-      if (data.gameType !== gameType) {
+    (data: GameConfig) => {
+      if (data.gameType !== gameConfig.gameType) {
         setAssignments({});
       }
-      setCourts(data.courts);
-      setGameType(data.gameType);
+      setGameConfig(data);
     },
-    [gameType, setAssignments],
+    [gameConfig.gameType, setAssignments],
   );
 
   const assignPlayerToCourt = useCallback(
@@ -146,17 +142,16 @@ export default function PickleballContextProvider({ children }: Props) {
 
   const randomizeAllAssignments = useCallback(
     (players: string[]) => {
-      const newAssignments = assignPlayersRandomly(players, courts, gameType);
+      const newAssignments = assignPlayersRandomly(players, gameConfig.courts, gameConfig.gameType);
       setAssignments(newAssignments);
     },
-    [courts, gameType, setAssignments],
+    [gameConfig, setAssignments],
   );
 
   return (
     <PickleballContext.Provider
       value={{
-        courts,
-        gameType,
+        gameConfig,
         assignments,
         updateConfig,
         assignPlayerToCourt,

@@ -1,11 +1,11 @@
 'use client';
 
 import { Controller, useFormContext } from 'react-hook-form';
-import { ConfigForm } from './types';
+import { GameConfig } from './types';
 import Box from '@/ds/Box';
 
 export const GameType = () => {
-  const { control } = useFormContext<ConfigForm>();
+  const { control } = useFormContext<GameConfig>();
 
   return (
     <Controller

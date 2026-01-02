@@ -9,7 +9,7 @@ type LabelProps = {
 const Label = React.forwardRef<HTMLLabelElement, LabelProps>(({ children, sx, ...rest }, ref) => {
   const sxStyle = useTransformSx(sx);
   return (
-    <label ref={ref} style={sxStyle} {...rest}>
+    <label ref={ref} style={{ fontWeight: 600, ...sxStyle }} {...rest}>
       {children}
     </label>
   );
