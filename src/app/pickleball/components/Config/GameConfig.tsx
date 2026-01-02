@@ -20,7 +20,7 @@ const GameConfig = () => {
 
   return (
     <>
-      <Flex gap={2}>
+      <Flex gap={1} alignItems="center">
         <Button
           onClick={() => openPanel('config')}
           sx={{

@@ -11,7 +11,7 @@ export default function PickleballClient() {
   return (
     <PlayersProvider>
       <PickleballContextProvider>
-        <Flex justifyContent="space-between" sx={{ mb: 4 }}>
+        <Flex justifyContent="space-between">
           <Heading as="h1">Pickleball</Heading>
           <GameConfig />
         </Flex>
