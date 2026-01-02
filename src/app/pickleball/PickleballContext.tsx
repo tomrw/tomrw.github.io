@@ -1,13 +1,7 @@
 'use client';
 
 import React, { useCallback, useState } from 'react';
-import {
-  ConfigForm,
-  GameType,
-  CourtAssignments,
-  PlayerAssignment,
-  AssignmentValidation,
-} from './types';
+import { ConfigForm, GameType, CourtAssignments, PlayerAssignment } from './types';
 import { DEFAULT_COURT_COUNT, DEFAULT_GAME_TYPE } from './constants';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { assignPlayersRandomly } from './utils/assignmentUtils';
@@ -21,11 +15,7 @@ type PickleballContext = {
   gameType: GameType;
   assignments: CourtAssignments;
   updateConfig: (data: ConfigForm) => void;
-  assignPlayerToCourt: (
-    courtId: number,
-    playerName: string,
-    position: number,
-  ) => AssignmentValidation;
+  assignPlayerToCourt: (courtId: number, playerName: string, position: number) => void;
   removePlayerFromCourt: (courtId: number, position: number) => void;
   clearAllAssignments: () => void;
   clearPlayerAssignments: (playerName: string) => void;
@@ -58,7 +48,6 @@ export default function PickleballContextProvider({ children }: Props) {
 
   const updateConfig = useCallback(
     (data: ConfigForm) => {
-      // Clear assignments if game type changed
       if (data.gameType !== gameType) {
         setAssignments({});
       }
@@ -69,28 +58,14 @@ export default function PickleballContextProvider({ children }: Props) {
   );
 
   const assignPlayerToCourt = useCallback(
-    (courtId: number, playerName: string, position: number): AssignmentValidation => {
-      // Validate court exists
-      if (courtId < 1 || courtId > courts) {
-        return { isValid: false, error: 'Invalid court number' };
-      }
-
-      // Validate position based on game type
-      const maxPosition = gameType === 'singles' ? 1 : 3;
-      if (position < 0 || position > maxPosition) {
-        return { isValid: false, error: `Invalid position for ${gameType}` };
-      }
-
-      // Check if player is already assigned elsewhere and remove them
+    (courtId: number, playerName: string, position: number) => {
       const existingAssignment = Object.values(assignments)
         .flat()
         .find((player) => player.playerName === playerName);
 
-      // Assign player
       setAssignments((prev) => {
         const newAssignments = { ...prev };
 
-        // Remove player from existing assignment if it exists
         if (existingAssignment) {
           newAssignments[existingAssignment.courtId] = newAssignments[
             existingAssignment.courtId
@@ -100,7 +75,6 @@ export default function PickleballContextProvider({ children }: Props) {
           }
         }
 
-        // Add player to new position
         if (!newAssignments[courtId]) {
           newAssignments[courtId] = [];
         }
@@ -110,7 +84,7 @@ export default function PickleballContextProvider({ children }: Props) {
 
       return { isValid: true };
     },
-    [assignments, courts, gameType, setAssignments],
+    [assignments, setAssignments],
   );
 
   const removePlayerFromCourt = useCallback(

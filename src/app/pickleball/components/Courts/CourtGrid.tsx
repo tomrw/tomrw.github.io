@@ -17,15 +17,7 @@ export default function CourtGrid() {
   const handleSelectPlayer = useCallback(
     (playerName: string) => {
       if (dropdownState) {
-        const result = assignPlayerToCourt(
-          dropdownState.courtId,
-          playerName,
-          dropdownState.position,
-        );
-
-        if (!result.isValid) {
-          alert(result.error || 'Assignment failed');
-        }
+        assignPlayerToCourt(dropdownState.courtId, playerName, dropdownState.position);
       }
     },
     [dropdownState, assignPlayerToCourt],

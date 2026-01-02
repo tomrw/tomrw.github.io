@@ -32,14 +32,7 @@ export default function ConfigPanel({ open, onClose }: Props) {
 
   return (
     <FormProvider {...form}>
-      <SidePanel
-        open={open}
-        onClose={onClose}
-        title="Config"
-        sx={{
-          width: ['100%', 400, 480, 560],
-        }}
-      >
+      <SidePanel open={open} onClose={onClose} title="Config">
         <Box
           as="form"
           onSubmit={onSubmit}

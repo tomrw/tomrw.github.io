@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import { useEffect, useRef, useState, useMemo, useCallback, useLayoutEffect } from 'react';
 import { usePickleballContext } from '../../PickleballContext';
 import Box from '@/ds/Box';
 import Button from '@/ds/Button';
@@ -67,7 +67,7 @@ export default function PlayerSelectionDropdown({
     onClose();
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const updatePosition = () => {
       if (dropdownRef.current) {
         const rect = dropdownRef.current.getBoundingClientRect();

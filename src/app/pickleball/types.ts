@@ -14,8 +14,3 @@ export type PlayerAssignment = {
 export type CourtAssignments = {
   [courtId: number]: PlayerAssignment[];
 };
-
-export type AssignmentValidation = {
-  isValid: boolean;
-  error?: string;
-};

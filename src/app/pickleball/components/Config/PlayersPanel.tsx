@@ -37,14 +37,7 @@ export default function PlayersPanel({ open, onClose }: Props) {
   };
 
   return (
-    <SidePanel
-      open={open}
-      onClose={onClose}
-      title="Players"
-      sx={{
-        width: ['100%', 400, 480, 560],
-      }}
-    >
+    <SidePanel open={open} onClose={onClose} title="Players">
       <Box
         sx={{
           display: 'flex',

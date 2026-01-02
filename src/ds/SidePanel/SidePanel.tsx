@@ -9,7 +9,6 @@ import Box from '../Box';
 type Props = {
   open: boolean;
   onClose: () => void;
-  width?: number;
   title: string;
   duration?: number; // animation duration in ms
   easing?: string;
@@ -37,7 +36,6 @@ const panelStyleBase: CSSProperties = {
 export default function SidePanel({
   open,
   onClose,
-  width = 360,
   children,
   title,
   duration = 300,
@@ -74,11 +72,10 @@ export default function SidePanel({
     transition: `background ${duration}ms ${easing}, pointer-events ${duration}ms ${easing}`,
   };
 
-  const sxStyle = useTransformSx(sx);
+  const sxStyle = useTransformSx({ ...sx, width: ['100%', 400, 480, 560] });
 
   const panelStyle: CSSProperties = {
     ...panelStyleBase,
-    width,
     transform: open ? 'translateX(0)' : 'translateX(100%)',
     boxShadow: open ? '-24px 0 40px rgba(0,0,0,0.6)' : 'none',
     transition: `transform ${duration}ms ${easing}, box-shadow ${duration}ms ${easing}`,
