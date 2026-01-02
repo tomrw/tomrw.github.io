@@ -26,19 +26,22 @@ export default function PlayerSelectionDropdown({
   const [searchQuery, setSearchQuery] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const { assignments, getUnassignedPlayers } = usePickleballContext();
+  const { assignments } = usePickleballContext();
 
   const { players } = usePlayersContext();
-  const unassignedPlayers = getUnassignedPlayers(players);
+
+  const currentAssignment = position
+    ? assignments[position.courtId]?.find((a) => a.position === position.position)
+    : null;
 
   const filteredPlayers = useMemo(() => {
     if (!searchQuery.trim()) {
-      return unassignedPlayers;
+      return players;
     }
 
     const query = searchQuery.toLowerCase().trim();
-    return unassignedPlayers.filter((playerName) => playerName.toLowerCase().includes(query));
-  }, [unassignedPlayers, searchQuery]);
+    return players.filter((playerName) => playerName.toLowerCase().includes(query));
+  }, [players, searchQuery]);
 
   useEffect(() => {
     if (searchInputRef.current) {
@@ -51,10 +54,6 @@ export default function PlayerSelectionDropdown({
   const handleSearchChange = useCallback((value: string) => {
     setSearchQuery(value);
   }, []);
-
-  const currentAssignment = position
-    ? assignments[position.courtId]?.find((a) => a.position === position.position)
-    : null;
 
   const handleSelectPlayer = (playerName: string) => {
     onSelectPlayer(playerName);
@@ -144,7 +143,7 @@ export default function PlayerSelectionDropdown({
           </Button>
         )}
 
-        {unassignedPlayers.length > 0 && (
+        {players.length > 0 && (
           <Box sx={{ mb: 2, position: 'relative' }}>
             <Input
               ref={searchInputRef}
@@ -158,11 +157,11 @@ export default function PlayerSelectionDropdown({
           </Box>
         )}
 
-        {filteredPlayers.length === 0 && unassignedPlayers.length > 0 ? (
+        {filteredPlayers.length === 0 && players.length > 0 ? (
           <Box sx={{ color: '#666', textAlign: 'center', py: 2 }}>
             No players found matching &quot;{searchQuery}&quot;
           </Box>
-        ) : unassignedPlayers.length === 0 ? (
+        ) : players.length === 0 ? (
           <Box sx={{ color: '#666', textAlign: 'center', py: 2 }}>
             {currentAssignment ? 'No players available for replacement' : 'No unassigned players'}
           </Box>
@@ -172,7 +171,7 @@ export default function PlayerSelectionDropdown({
               {currentAssignment ? 'Replace with:' : 'Assign player:'}
               {searchQuery && (
                 <Box sx={{ fontSize: '12px', color: '#999', mt: 1 }}>
-                  {filteredPlayers.length} of {unassignedPlayers.length} players
+                  {filteredPlayers.length} of {players.length} players
                 </Box>
               )}
             </Box>

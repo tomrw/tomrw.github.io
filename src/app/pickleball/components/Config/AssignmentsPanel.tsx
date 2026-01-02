@@ -8,6 +8,7 @@ import Button from '@/ds/Button';
 import Flex from '@/ds/Flex';
 import Box from '@/ds/Box';
 import { usePlayersContext } from '../../contexts/PlayersContext';
+import Heading from '@/ds/Heading/Heading';
 
 type Props = {
   open: boolean;
@@ -26,6 +27,7 @@ export default function AssignmentsPanel({ open, onClose }: Props) {
     removePlayerFromCourt,
     clearAllAssignments,
     getUnassignedPlayers,
+    randomizeAllAssignments,
   } = usePickleballContext();
   const { players } = usePlayersContext();
   const unassignedPlayers = getUnassignedPlayers(players);
@@ -52,6 +54,12 @@ export default function AssignmentsPanel({ open, onClose }: Props) {
 
   const handleRemoveAssignment = (courtId: number, position: number) => {
     removePlayerFromCourt(courtId, position);
+    setAssignmentError('');
+  };
+
+  const handleRandomizeAssignments = () => {
+    randomizeAllAssignments(players);
+    setSelectedPlayer(null);
     setAssignmentError('');
   };
 
@@ -129,10 +137,30 @@ export default function AssignmentsPanel({ open, onClose }: Props) {
           )}
         </Box>
 
-        {/* Courts Grid */}
         <Box>
           <Box sx={{ flex: 1, overflowY: 'auto' }}>
-            <h4 style={{ fontSize: '16px', marginBottom: '8px' }}>Court Positions</h4>
+            <Heading as="h4">Court Positions</Heading>
+
+            <Flex direction="column" gap={2} sx={{ mb: 3 }}>
+              {assignmentError && (
+                <Box sx={{ color: '#e11', fontSize: '14px' }}>{assignmentError}</Box>
+              )}
+
+              <Flex gap={2}>
+                <Button
+                  type="button"
+                  onClick={handleRandomizeAssignments}
+                  disabled={players.length === 0}
+                >
+                  Randomize Players
+                </Button>
+
+                <Button type="button" onClick={clearAllAssignments} disabled={assignedCount === 0}>
+                  Clear All Assignments
+                </Button>
+              </Flex>
+            </Flex>
+
             <Flex direction="column" gap={2}>
               {Array.from({ length: courts }, (_, i) => i + 1).map((courtId) => (
                 <Box key={courtId} sx={{ p: 2, border: '1px solid #ddd', borderRadius: '4px' }}>
@@ -198,43 +226,6 @@ export default function AssignmentsPanel({ open, onClose }: Props) {
             </Flex>
           </Box>
         </Box>
-
-        {/* Controls */}
-        <Flex direction="column" gap={2}>
-          {assignmentError && <Box sx={{ color: '#e11', fontSize: '14px' }}>{assignmentError}</Box>}
-
-          <Flex gap={2}>
-            <Button
-              type="button"
-              onClick={clearAllAssignments}
-              disabled={assignedCount === 0}
-              sx={{
-                bg: assignedCount === 0 ? '#f5f5f5' : '#fff',
-                color: assignedCount === 0 ? '#999' : '#333',
-                border: '1px solid #ccc',
-              }}
-            >
-              Clear All Assignments
-            </Button>
-
-            {selectedPlayer && (
-              <Button
-                type="button"
-                onClick={() => {
-                  setSelectedPlayer(null);
-                  setAssignmentError('');
-                }}
-                sx={{
-                  bg: '#f8f9fa',
-                  color: '#666',
-                  border: '1px solid #ddd',
-                }}
-              >
-                Cancel Selection
-              </Button>
-            )}
-          </Flex>
-        </Flex>
       </Box>
     </SidePanel>
   );

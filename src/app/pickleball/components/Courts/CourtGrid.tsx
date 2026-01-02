@@ -39,12 +39,10 @@ export default function CourtGrid() {
     [removePlayerFromCourt],
   );
 
-  // Close dropdown
   const closeDropdown = () => {
     setDropdownState(null);
   };
 
-  // Handle position click
   const handlePositionClick = (courtId: number, position: number) => {
     setDropdownState({
       courtId,
@@ -52,7 +50,6 @@ export default function CourtGrid() {
     });
   };
 
-  // Calculate grid layout
   const cols = Math.ceil(Math.sqrt(courts));
 
   return (

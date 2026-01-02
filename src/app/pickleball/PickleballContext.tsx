@@ -10,6 +10,7 @@ import {
 } from './types';
 import { DEFAULT_COURT_COUNT, DEFAULT_GAME_TYPE } from './constants';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { assignPlayersRandomly } from './utils/assignmentUtils';
 
 type Props = {
   children: React.ReactNode;
@@ -30,6 +31,7 @@ type PickleballContext = {
   clearPlayerAssignments: (playerName: string) => void;
   getPlayerAssignments: (playerName: string) => PlayerAssignment[];
   getUnassignedPlayers: (players: string[]) => string[];
+  randomizeAllAssignments: (players: string[]) => void;
 };
 
 const PickleballContext = React.createContext<PickleballContext>({
@@ -43,6 +45,7 @@ const PickleballContext = React.createContext<PickleballContext>({
   clearPlayerAssignments: () => {},
   getPlayerAssignments: () => [],
   getUnassignedPlayers: () => [],
+  randomizeAllAssignments: () => {},
 });
 
 export default function PickleballContextProvider({ children }: Props) {
@@ -78,24 +81,26 @@ export default function PickleballContextProvider({ children }: Props) {
         return { isValid: false, error: `Invalid position for ${gameType}` };
       }
 
-      // Check if player is already assigned elsewhere
+      // Check if player is already assigned elsewhere and remove them
       const existingAssignment = Object.values(assignments)
         .flat()
         .find((player) => player.playerName === playerName);
-      if (existingAssignment) {
-        return { isValid: false, error: 'Player is already assigned to another position' };
-      }
-
-      // Check if position is already taken on this court
-      const courtAssignments = assignments[courtId] || [];
-      const positionTaken = courtAssignments.some((a) => a.position === position);
-      if (positionTaken) {
-        return { isValid: false, error: 'Position is already taken' };
-      }
 
       // Assign player
       setAssignments((prev) => {
         const newAssignments = { ...prev };
+
+        // Remove player from existing assignment if it exists
+        if (existingAssignment) {
+          newAssignments[existingAssignment.courtId] = newAssignments[
+            existingAssignment.courtId
+          ].filter((a) => a.position !== existingAssignment.position);
+          if (newAssignments[existingAssignment.courtId].length === 0) {
+            delete newAssignments[existingAssignment.courtId];
+          }
+        }
+
+        // Add player to new position
         if (!newAssignments[courtId]) {
           newAssignments[courtId] = [];
         }
@@ -105,7 +110,7 @@ export default function PickleballContextProvider({ children }: Props) {
 
       return { isValid: true };
     },
-    [courts, gameType, assignments, setAssignments],
+    [assignments, courts, gameType, setAssignments],
   );
 
   const removePlayerFromCourt = useCallback(
@@ -165,6 +170,14 @@ export default function PickleballContextProvider({ children }: Props) {
     [assignments],
   );
 
+  const randomizeAllAssignments = useCallback(
+    (players: string[]) => {
+      const newAssignments = assignPlayersRandomly(players, courts, gameType);
+      setAssignments(newAssignments);
+    },
+    [courts, gameType, setAssignments],
+  );
+
   return (
     <PickleballContext.Provider
       value={{
@@ -178,6 +191,7 @@ export default function PickleballContextProvider({ children }: Props) {
         clearPlayerAssignments,
         getPlayerAssignments,
         getUnassignedPlayers,
+        randomizeAllAssignments,
       }}
     >
       {children}
