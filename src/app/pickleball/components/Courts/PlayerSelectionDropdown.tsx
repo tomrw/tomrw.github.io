@@ -138,7 +138,7 @@ export default function PlayerSelectionDropdown({
         )}
 
         {currentAssignment && (
-          <Button type="button" full onClick={handleRemovePlayer}>
+          <Button type="button" full onClick={handleRemovePlayer} sx={{ mb: 2 }}>
             Remove Player
           </Button>
         )}
@@ -152,6 +152,11 @@ export default function PlayerSelectionDropdown({
               inputProps={{
                 placeholder: 'Search players...',
                 'aria-label': 'Search players',
+                onKeyDown: (e) => {
+                  if (e.key === 'Enter' && filteredPlayers.length === 1) {
+                    handleSelectPlayer(filteredPlayers[0]);
+                  }
+                },
               }}
             />
           </Box>
