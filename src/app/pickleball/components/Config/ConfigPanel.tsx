@@ -1,6 +1,6 @@
 'use client';
 
-import SidePanel from '../../../../ds/SidePanel/SidePanel';
+import SidePanel from '@/ds/SidePanel';
 import { FormProvider, useForm } from 'react-hook-form';
 import Courts from '../../Courts';
 import Button from '@/ds/Button';

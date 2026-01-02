@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { usePlayersContext } from '../../contexts/PlayersContext';
 import { usePickleballContext } from '../../PickleballContext';
-import SidePanel from '../../../../ds/SidePanel/SidePanel';
+import SidePanel from '@/ds/SidePanel';
 import Button from '@/ds/Button';
 import Flex from '@/ds/Flex';
 import Input from '@/ds/Input';
