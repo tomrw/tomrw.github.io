@@ -1,0 +1,12 @@
+.gameLengthPicker :global(.react-time-picker__wrapper) {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  width: 100%;
+  background-color: #fff;
+  color: #000;
+}
+
+.gameLengthPicker {
+  width: 100%;
+}

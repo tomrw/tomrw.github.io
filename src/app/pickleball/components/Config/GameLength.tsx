@@ -5,9 +5,10 @@ import TimePicker from 'react-time-picker';
 import { GameConfig } from '../../types';
 import { gameLengthToDate, parseGameLength } from '../../utils/timeUtils';
 import 'react-time-picker/dist/TimePicker.css';
-import 'react-clock/dist/Clock.css';
 import Label from '@/ds/Label';
 import Flex from '@/ds/Flex';
+
+import styles from './GameLength.module.css';
 
 export default function GameLength() {
   const { control } = useFormContext<GameConfig>();
@@ -24,6 +25,7 @@ export default function GameLength() {
       <Label htmlFor="game-length">Game Length</Label>
       <TimePicker
         id="game-length"
+        className={styles.gameLengthPicker}
         value={gameLengthToDate(gameLength)}
         onChange={(date) => {
           onChange(date ? parseGameLength(date) : null);

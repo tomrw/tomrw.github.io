@@ -17,6 +17,8 @@ export default function Dropdown({ label, options, onChange, value, sx }: Props)
   const sxStyle = useTransformSx({
     width: '100%',
     padding: 1,
+    backgroundColor: 'white',
+    borderRadius: 1,
     ...sx,
   });
 
