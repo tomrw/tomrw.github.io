@@ -49,11 +49,11 @@ export default function CourtGrid() {
   const cols = Math.ceil(Math.sqrt(courts));
 
   return (
-    <Box sx={{ mt: 6, position: 'relative' }}>
+    <Box sx={{ mt: 6 }}>
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: `repeat(${cols}, 1fr)`,
+          gridTemplateColumns: ['repeat(1, 1fr)', `repeat(${cols}, 1fr)`],
           gap: 3,
           padding: 3,
           bg: '#f8f9fa',

@@ -1,12 +1,14 @@
 import React from 'react';
 import { SxProp, useTransformSx } from '../sx';
 
+type OptionalArray<T> = T | Exclude<T, null | undefined>[];
+
 type FlexProps = React.HTMLAttributes<HTMLDivElement> & {
   as?: React.ElementType;
-  gap?: number | number[];
+  gap?: OptionalArray<number>;
   justifyContent?: React.CSSProperties['justifyContent'];
   alignItems?: React.CSSProperties['alignItems'];
-  direction?: React.CSSProperties['flexDirection'];
+  direction?: OptionalArray<React.CSSProperties['flexDirection']>;
   wrap?: React.CSSProperties['flexWrap'];
   inline?: boolean;
   sx?: SxProp;
@@ -33,13 +35,13 @@ const Flex = React.forwardRef<HTMLDivElement, FlexProps>(
     const sxStyle = useTransformSx({
       ...sx,
       gap: gap ?? 0,
+      flexDirection: direction,
     });
 
     const combinedStyle: React.CSSProperties = {
       display,
       justifyContent,
       alignItems,
-      flexDirection: direction,
       flexWrap: wrap,
       ...sxStyle,
     };

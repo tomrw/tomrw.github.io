@@ -92,7 +92,6 @@ function transformSx(sx: SxProp, currentBreakpoint: Breakpoint = 'md'): { [key: 
   Object.entries(sx).forEach(([key, value]) => {
     const cssProperty = shorthandMap[key];
 
-    // Simple responsive logic - return first valid value
     let resolvedValue: SxValue = value;
     if (Array.isArray(value) && value.length > 0) {
       const breakpointIndex = {
@@ -103,8 +102,9 @@ function transformSx(sx: SxProp, currentBreakpoint: Breakpoint = 'md'): { [key: 
         '2xl': 4,
       }[currentBreakpoint];
 
-      if (breakpointIndex !== undefined && breakpointIndex < value.length) {
-        resolvedValue = value[breakpointIndex];
+      if (breakpointIndex !== undefined) {
+        const resolvedIndex = Math.min(breakpointIndex, value.length - 1);
+        resolvedValue = value[resolvedIndex];
       }
     }
 
@@ -133,4 +133,5 @@ export function useTransformSx(sx?: SxProp) {
   return useMemo(() => (sx ? transformSx(sx, breakpoint) : {}), [sx, breakpoint]);
 }
 
+export { transformSx };
 export type { SxProp };
