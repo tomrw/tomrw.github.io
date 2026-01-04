@@ -3,14 +3,21 @@ import { usePickleballContext } from '../../PickleballContext';
 import Box from '@/ds/Box/Box';
 import Court from './Court';
 import PlayerSelectionDropdown from './PlayerSelectionDropdown';
+import { ReactNode } from 'react';
+import { useWindowSize } from '@/hooks/useWindowSize';
 
-export default function CourtGrid() {
+interface CourtGridProps {
+  timer?: ReactNode;
+}
+
+export default function CourtGrid({ timer }: CourtGridProps) {
   const {
     gameConfig: { courts, gameType },
     assignments,
     assignPlayerToCourt,
     removePlayerFromCourt,
   } = usePickleballContext();
+  const { breakpointId } = useWindowSize();
 
   const [dropdownState, setDropdownState] = useState<{
     courtId: number;
@@ -57,9 +64,7 @@ export default function CourtGrid() {
           gap: 3,
           padding: 3,
           bg: '#f8f9fa',
-          borderRadius: '8px',
-          maxWidth: '100%',
-          overflow: 'hidden',
+          borderRadius: 1,
         }}
       >
         {Array.from({ length: courts }, (_, i) => {
@@ -76,6 +81,18 @@ export default function CourtGrid() {
             />
           );
         })}
+
+        {timer && (
+          <Box
+            sx={{
+              gridColumn: breakpointId === 0 ? 1 : cols,
+              gridRow: 1,
+              alignSelf: 'start',
+            }}
+          >
+            {timer}
+          </Box>
+        )}
       </Box>
 
       {dropdownState && (

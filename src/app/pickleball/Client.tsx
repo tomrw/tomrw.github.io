@@ -6,6 +6,7 @@ import Flex from '@/ds/Flex';
 import Heading from '@/ds/Heading';
 import CourtGrid from './components/Courts/CourtGrid';
 import GameConfig from './components/Config/GameConfig';
+import CountdownTimer from './components/CountdownTimer';
 
 export default function PickleballClient() {
   return (
@@ -15,7 +16,7 @@ export default function PickleballClient() {
           <Heading as="h1">Pickleball</Heading>
           <GameConfig />
         </Flex>
-        <CourtGrid />
+        <CourtGrid timer={<CountdownTimer />} />
       </PickleballContextProvider>
     </PlayersProvider>
   );

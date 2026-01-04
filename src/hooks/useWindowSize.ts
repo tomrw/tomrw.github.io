@@ -19,6 +19,7 @@ export function useWindowSize() {
   });
 
   const [breakpoint, setBreakpoint] = useState<Breakpoint>('md');
+  const [breakpointId, setBreakpointId] = useState(1); // md = 1
 
   useEffect(() => {
     const handleResize = () => {
@@ -29,12 +30,31 @@ export function useWindowSize() {
 
       // Update breakpoint based on width
       const width = window.innerWidth;
-      if (width >= breakpoints['2xl']) setBreakpoint('2xl');
-      else if (width >= breakpoints.xl) setBreakpoint('xl');
-      else if (width >= breakpoints.lg) setBreakpoint('lg');
-      else if (width >= breakpoints.md) setBreakpoint('md');
-      else if (width >= breakpoints.sm) setBreakpoint('sm');
-      else setBreakpoint('sm');
+      let newBreakpoint: Breakpoint;
+      let newId: number;
+
+      if (width >= breakpoints['2xl']) {
+        newBreakpoint = '2xl';
+        newId = 4;
+      } else if (width >= breakpoints.xl) {
+        newBreakpoint = 'xl';
+        newId = 3;
+      } else if (width >= breakpoints.lg) {
+        newBreakpoint = 'lg';
+        newId = 2;
+      } else if (width >= breakpoints.md) {
+        newBreakpoint = 'md';
+        newId = 1;
+      } else if (width >= breakpoints.sm) {
+        newBreakpoint = 'sm';
+        newId = 0;
+      } else {
+        newBreakpoint = 'sm';
+        newId = 0;
+      }
+
+      setBreakpoint(newBreakpoint);
+      setBreakpointId(newId);
     };
 
     window.addEventListener('resize', handleResize);
@@ -42,5 +62,5 @@ export function useWindowSize() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  return { windowSize, breakpoint };
+  return { windowSize, breakpoint, breakpointId };
 }

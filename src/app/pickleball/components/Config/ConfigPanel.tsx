@@ -24,6 +24,7 @@ export default function ConfigPanel({ open, onClose }: Props) {
   });
 
   const onSubmit = form.handleSubmit((data) => {
+    console.log('ConfigPanel submitting data:', data);
     updateConfig(data);
     onClose();
   });

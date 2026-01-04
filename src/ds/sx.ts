@@ -14,9 +14,11 @@ type ProcessedValue = CSSValue | CSSObject | null | { [key: string]: ProcessedVa
 
 const breakpoints = [640, 768, 1024, 1280, 1536]; // sm, md, lg, xl, 2xl
 
+// Map of properties to process
 const shorthandMap: Record<string, string | string[]> = {
   // Spacing
   p: 'padding',
+  padding: 'padding',
   pt: 'paddingBlockStart',
   pb: 'paddingBlockEnd',
   pl: 'paddingInlineStart',
@@ -24,6 +26,7 @@ const shorthandMap: Record<string, string | string[]> = {
   px: ['paddingInlineStart', 'paddingInlineEnd'],
   py: ['paddingBlockStart', 'paddingBlockEnd'],
   m: 'margin',
+  margin: 'margin',
   mt: 'marginBlockStart',
   mb: 'marginBlockEnd',
   ml: 'marginInlineStart',
@@ -33,6 +36,12 @@ const shorthandMap: Record<string, string | string[]> = {
 
   // Colors
   bg: 'backgroundColor',
+
+  // Flex
+  gap: 'gap',
+
+  // Border
+  borderRadius: 'borderRadius',
 };
 
 function toRem(value: number): string {
@@ -84,28 +93,26 @@ function processValue(value: SxValue): ProcessedValue {
   return value;
 }
 
-type Breakpoint = 'sm' | 'md' | 'lg' | 'xl' | '2xl';
-
-function transformSx(sx: SxProp, currentBreakpoint: Breakpoint = 'md'): { [key: string]: unknown } {
+function transformSx(sx: SxProp, currentBreakpointId: number = 1): { [key: string]: unknown } {
   const styles: { [key: string]: unknown } = {};
 
   Object.entries(sx).forEach(([key, value]) => {
     const cssProperty = shorthandMap[key];
+    const isShorthandProperty = cssProperty !== undefined;
 
     let resolvedValue: SxValue = value;
-    if (Array.isArray(value) && value.length > 0) {
-      const breakpointIndex = {
-        sm: 0,
-        md: 1,
-        lg: 2,
-        xl: 3,
-        '2xl': 4,
-      }[currentBreakpoint];
 
-      if (breakpointIndex !== undefined) {
-        const resolvedIndex = Math.min(breakpointIndex, value.length - 1);
-        resolvedValue = value[resolvedIndex];
-      }
+    if (!isShorthandProperty && !Array.isArray(value)) {
+      // For non-shorthand properties, pass through responsive arrays as-is
+      styles[key] = value as ProcessedValue;
+      return;
+    }
+
+    // Only apply breakpoint resolution to shorthand properties (p, m, px, py, bg, etc.)
+    if (Array.isArray(value) && value.length > 0) {
+      // Use the breakpointId directly instead of mapping
+      const resolvedIndex = Math.min(currentBreakpointId, value.length - 1);
+      resolvedValue = value[resolvedIndex];
     }
 
     const processedValue = processValue(resolvedValue);
@@ -120,7 +127,7 @@ function transformSx(sx: SxProp, currentBreakpoint: Breakpoint = 'md'): { [key: 
         styles[cssProperty] = processedValue;
       }
     } else {
-      // Pass through unknown properties as-is
+      // Pass through unknown properties as-is (including responsive arrays)
       styles[key] = processedValue;
     }
   });
@@ -129,8 +136,8 @@ function transformSx(sx: SxProp, currentBreakpoint: Breakpoint = 'md'): { [key: 
 }
 
 export function useTransformSx(sx?: SxProp) {
-  const { breakpoint } = useWindowSize();
-  return useMemo(() => (sx ? transformSx(sx, breakpoint) : {}), [sx, breakpoint]);
+  const { breakpointId } = useWindowSize();
+  return useMemo(() => (sx ? transformSx(sx, breakpointId) : {}), [sx, breakpointId]);
 }
 
 export { transformSx };
