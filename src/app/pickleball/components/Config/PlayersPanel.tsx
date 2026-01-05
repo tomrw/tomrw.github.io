@@ -1,9 +1,9 @@
 'use client';
 
+import { Box, Button, Flex, Input, SidePanel, Text } from '@/ds';
 import { useState } from 'react';
 import { usePlayersContext } from '../../contexts/PlayersContext';
 import { usePickleballContext } from '../../PickleballContext';
-import { SidePanel, Button, Flex, Input, Box, Text } from '@/ds';
 
 type Props = {
   open: boolean;

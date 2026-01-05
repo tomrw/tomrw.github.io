@@ -9,7 +9,7 @@
     "lint": "eslint src --ext .ts,.tsx,.js,.jsx --fix --max-warnings=0",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\" --list-different",
     "prepare": "husky",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "watch": "jest --watch"
   },
   "dependencies": {

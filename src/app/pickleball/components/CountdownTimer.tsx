@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { GameLength } from '../types';
-import { Button, Flex, Box, Heading } from '@/ds';
+import { Box, Button, Flex, Heading } from '@/ds';
+import { useCallback, useEffect, useState } from 'react';
 import { usePickleballContext } from '../PickleballContext';
+import { GameLength } from '../types';
 
 type TimerState = 'idle' | 'running' | 'paused' | 'completed';
 

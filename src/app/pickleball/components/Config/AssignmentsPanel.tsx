@@ -1,9 +1,9 @@
 'use client';
 
-import { Text, Button, Box, SidePanel } from '@/ds';
+import { Box, Button, SidePanel, Text } from '@/ds';
+import Heading from '@/ds/Heading/Heading';
 import { usePickleballContext } from '../../PickleballContext';
 import { usePlayersContext } from '../../contexts/PlayersContext';
-import Heading from '@/ds/Heading/Heading';
 
 type Props = {
   open: boolean;
