@@ -29,7 +29,7 @@ const GameConfig = () => {
             border: activePanel === 'config' ? '1px solid #007acc' : '1px solid #ccc',
           }}
         >
-          Config
+          Session Config
         </Button>
         <Button
           onClick={() => openPanel('assignments')}

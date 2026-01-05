@@ -8,8 +8,8 @@ import { GameConfig } from '../../types';
 import { usePickleballContext } from '../../PickleballContext';
 import { DEFAULT_GAME_CONFIG } from '../../constants';
 import { GameType } from '../../GameType';
-import Box from '@/ds/Box';
 import GameLength from './GameLength';
+import Flex from '@/ds/Flex';
 
 type Props = {
   open: boolean;
@@ -24,23 +24,14 @@ export default function ConfigPanel({ open, onClose }: Props) {
   });
 
   const onSubmit = form.handleSubmit((data) => {
-    console.log('ConfigPanel submitting data:', data);
     updateConfig(data);
     onClose();
   });
 
   return (
     <FormProvider {...form}>
-      <SidePanel open={open} onClose={onClose} title="Config">
-        <Box
-          as="form"
-          onSubmit={onSubmit}
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-          }}
-        >
+      <SidePanel open={open} onClose={onClose} title="Session Management">
+        <Flex direction="column" gap={2} as="form" onSubmit={onSubmit}>
           <section>
             <GameType />
           </section>
@@ -54,9 +45,9 @@ export default function ConfigPanel({ open, onClose }: Props) {
           </section>
 
           <Button full type="submit">
-            Save
+            Start New Session
           </Button>
-        </Box>
+        </Flex>
       </SidePanel>
     </FormProvider>
   );

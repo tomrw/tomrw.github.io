@@ -1,0 +1,82 @@
+.text {
+  display: block;
+}
+
+.text.span {
+  display: inline;
+}
+
+.xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.md {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.xl2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.xl3 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.normal {
+  font-weight: 400;
+}
+
+.medium {
+  font-weight: 500;
+}
+
+.semibold {
+  font-weight: 600;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.primary {
+  color: #111827;
+}
+
+.secondary {
+  color: #6b7280;
+}
+
+.muted {
+  color: #9ca3af;
+}
+
+.accent {
+  color: #3b82f6;
+}
+
+.success {
+  color: #059669;
+}
+
+.error {
+  color: #dc2626;
+}

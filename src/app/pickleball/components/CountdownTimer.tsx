@@ -20,6 +20,7 @@ export default function CountdownTimer({ onComplete }: CountdownTimerProps) {
   const [state, setState] = useState<TimerState>('idle');
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setTimeLeft(gameConfig.gameLength);
     setState('idle');
   }, [gameConfig.gameLength]);

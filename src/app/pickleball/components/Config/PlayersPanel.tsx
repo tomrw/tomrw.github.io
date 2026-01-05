@@ -8,6 +8,7 @@ import Button from '@/ds/Button';
 import Flex from '@/ds/Flex';
 import Input from '@/ds/Input';
 import Box from '@/ds/Box';
+import Text from '@/ds/Text';
 
 type Props = {
   open: boolean;
@@ -38,13 +39,8 @@ export default function PlayersPanel({ open, onClose }: Props) {
 
   return (
     <SidePanel open={open} onClose={onClose} title="Players">
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 3,
-        }}
-      >
+      <Flex direction="column" gap={3}>
+        <Text>Players registered in the system. Assign players when creating a new session</Text>
         <Flex justifyContent="space-between" gap={1} sx={{ mb: 1 }}>
           <Input
             value={newName}
@@ -81,7 +77,7 @@ export default function PlayersPanel({ open, onClose }: Props) {
             </Flex>
           ))}
         </Flex>
-      </Box>
+      </Flex>
     </SidePanel>
   );
 }
