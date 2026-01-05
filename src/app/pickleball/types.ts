@@ -9,6 +9,7 @@ export type GameConfig = {
   courts: number;
   gameType: GameType;
   gameLength: GameLength;
+  sessionPlayers: string[];
 };
 
 export type PlayerAssignment = {

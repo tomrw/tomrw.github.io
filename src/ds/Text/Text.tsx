@@ -3,7 +3,7 @@ import { SxProp, useTransformSx } from '../sx';
 import styles from './Text.module.css';
 
 type TextProps = React.PropsWithChildren<{
-  as?: 'span' | 'p' | 'div' | 'label' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
+  as?: 'span' | 'p';
   variant?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl';
   color?: 'primary' | 'secondary' | 'muted' | 'accent' | 'success' | 'error';
   weight?: 'normal' | 'medium' | 'semibold' | 'bold';
@@ -38,10 +38,12 @@ const Text = React.forwardRef<HTMLSpanElement, TextProps>(
       .filter(Boolean)
       .join(' ');
 
+    const ReactComponent = Component as React.ElementType;
+
     return (
-      <Component ref={ref} className={classes} style={sxStyle} {...rest}>
+      <ReactComponent ref={ref} className={classes} style={sxStyle} {...rest}>
         {children}
-      </Component>
+      </ReactComponent>
     );
   },
 );

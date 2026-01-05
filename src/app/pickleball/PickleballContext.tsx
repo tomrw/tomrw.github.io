@@ -20,7 +20,9 @@ type PickleballContext = {
   clearPlayerAssignments: (playerName: string) => void;
   getPlayerAssignments: (playerName: string) => PlayerAssignment[];
   getUnassignedPlayers: (players: string[]) => string[];
+  getSessionUnassignedPlayers: () => string[];
   randomizeAllAssignments: (players: string[]) => void;
+  randomizeSessionAssignments: () => void;
 };
 
 const PickleballContext = React.createContext<PickleballContext>({
@@ -33,7 +35,9 @@ const PickleballContext = React.createContext<PickleballContext>({
   clearPlayerAssignments: () => {},
   getPlayerAssignments: () => [],
   getUnassignedPlayers: () => [],
+  getSessionUnassignedPlayers: () => [],
   randomizeAllAssignments: () => {},
+  randomizeSessionAssignments: () => {},
 });
 
 export default function PickleballContextProvider({ children }: Props) {
@@ -140,6 +144,15 @@ export default function PickleballContextProvider({ children }: Props) {
     [assignments],
   );
 
+  const getSessionUnassignedPlayers = useCallback((): string[] => {
+    const assignedPlayerNames = new Set(
+      Object.values(assignments)
+        .flat()
+        .map((a) => a.playerName),
+    );
+    return gameConfig.sessionPlayers.filter((playerName) => !assignedPlayerNames.has(playerName));
+  }, [assignments, gameConfig.sessionPlayers]);
+
   const randomizeAllAssignments = useCallback(
     (players: string[]) => {
       const newAssignments = assignPlayersRandomly(players, gameConfig.courts, gameConfig.gameType);
@@ -147,6 +160,15 @@ export default function PickleballContextProvider({ children }: Props) {
     },
     [gameConfig, setAssignments],
   );
+
+  const randomizeSessionAssignments = useCallback(() => {
+    const newAssignments = assignPlayersRandomly(
+      gameConfig.sessionPlayers,
+      gameConfig.courts,
+      gameConfig.gameType,
+    );
+    setAssignments(newAssignments);
+  }, [gameConfig, setAssignments]);
 
   return (
     <PickleballContext.Provider
@@ -160,7 +182,9 @@ export default function PickleballContextProvider({ children }: Props) {
         clearPlayerAssignments,
         getPlayerAssignments,
         getUnassignedPlayers,
+        getSessionUnassignedPlayers,
         randomizeAllAssignments,
+        randomizeSessionAssignments,
       }}
     >
       {children}

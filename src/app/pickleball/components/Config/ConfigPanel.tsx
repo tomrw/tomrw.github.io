@@ -3,13 +3,15 @@
 import SidePanel from '@/ds/SidePanel';
 import { FormProvider, useForm } from 'react-hook-form';
 import Courts from '../../Courts';
-import Button from '@/ds/Button';
 import { GameConfig } from '../../types';
 import { usePickleballContext } from '../../PickleballContext';
 import { DEFAULT_GAME_CONFIG } from '../../constants';
 import { GameType } from '../../GameType';
 import GameLength from './GameLength';
+import SessionPlayers from './SessionPlayers';
 import Flex from '@/ds/Flex';
+import { ReactNode } from 'react';
+import CreateSession from './CreateSession';
 
 type Props = {
   open: boolean;
@@ -17,10 +19,11 @@ type Props = {
 };
 
 export default function ConfigPanel({ open, onClose }: Props) {
-  const { updateConfig } = usePickleballContext();
+  const { updateConfig, gameConfig } = usePickleballContext();
 
   const form = useForm<GameConfig>({
     defaultValues: DEFAULT_GAME_CONFIG,
+    values: gameConfig,
   });
 
   const onSubmit = form.handleSubmit((data) => {
@@ -32,23 +35,25 @@ export default function ConfigPanel({ open, onClose }: Props) {
     <FormProvider {...form}>
       <SidePanel open={open} onClose={onClose} title="Session Management">
         <Flex direction="column" gap={2} as="form" onSubmit={onSubmit}>
-          <section>
+          <WithSections>
             <GameType />
-          </section>
-
-          <section>
             <GameLength />
-          </section>
-
-          <section>
             <Courts />
-          </section>
-
-          <Button full type="submit">
-            Start New Session
-          </Button>
+            <SessionPlayers
+              onPlayersChange={(players) => form.setValue('sessionPlayers', players)}
+            />
+          </WithSections>
+          <CreateSession />
         </Flex>
       </SidePanel>
     </FormProvider>
   );
 }
+
+const WithSections = ({ children }: { children: ReactNode[] }) => (
+  <>
+    {children.map((child, index) => (
+      <section key={index}>{child}</section>
+    ))}
+  </>
+);

@@ -1,5 +1,6 @@
 'use client';
 
+import Text from '@/ds/Text';
 import { usePickleballContext } from '../../PickleballContext';
 import Button from '@/ds/Button';
 import Box from '@/ds/Box';
@@ -13,22 +14,49 @@ type Props = {
 };
 
 export default function AssignmentsPanel({ open, onClose }: Props) {
-  const { assignments, clearAllAssignments, randomizeAllAssignments } = usePickleballContext();
+  const {
+    gameConfig,
+    assignments,
+    clearAllAssignments,
+    randomizeAllAssignments,
+    randomizeSessionAssignments,
+  } = usePickleballContext();
   const { players } = usePlayersContext();
 
   const handleRandomizeAssignments = () => {
-    randomizeAllAssignments(players);
+    if (gameConfig.sessionPlayers.length > 0) {
+      randomizeSessionAssignments();
+    } else {
+      randomizeAllAssignments(players);
+    }
   };
 
   const assignedCount = Object.values(assignments).flat().length;
+  const sessionPlayerCount = gameConfig.sessionPlayers.length;
+  const hasSessionPlayers = sessionPlayerCount > 0;
 
   return (
     <SidePanel open={open} onClose={onClose} title="Court Assignments">
+      {hasSessionPlayers && (
+        <Box as="section" sx={{ mb: 2, p: 2, bg: '#f0f9ff', borderRadius: 1, color: '#666' }}>
+          <Heading as="h4">Session Players</Heading>
+          <Text as="p">
+            {sessionPlayerCount} player{sessionPlayerCount !== 1 ? 's' : ''} selected for this
+            session
+          </Text>
+          <Text as="p">Only session players will be available for court assignment</Text>
+        </Box>
+      )}
+
       <Box as="section" sx={{ mb: 2 }}>
         <Heading as="h4">Randomise</Heading>
-        <Box as="p">Randomly assign players to courts</Box>
-        <Button type="button" onClick={handleRandomizeAssignments} disabled={players.length === 0}>
-          Randomize Players
+        <Box as="p">Randomly assign {hasSessionPlayers ? 'session' : 'all'} players to courts</Box>
+        <Button
+          type="button"
+          onClick={handleRandomizeAssignments}
+          disabled={hasSessionPlayers ? sessionPlayerCount === 0 : players.length === 0}
+        >
+          Randomize {hasSessionPlayers ? 'Session' : 'All'} Players
         </Button>
       </Box>
 
