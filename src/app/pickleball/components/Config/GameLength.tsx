@@ -5,8 +5,7 @@ import TimePicker from 'react-time-picker';
 import { GameConfig } from '../../types';
 import { gameLengthToDate, parseGameLength } from '../../utils/timeUtils';
 import 'react-time-picker/dist/TimePicker.css';
-import Label from '@/ds/Label';
-import Flex from '@/ds/Flex';
+import { Label, Flex } from '@/ds';
 
 import styles from './GameLength.module.css';
 

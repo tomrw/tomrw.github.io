@@ -2,10 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { usePlayersContext } from '../../contexts/PlayersContext';
-import Flex from '@/ds/Flex';
-import Input from '@/ds/Input';
-import Button from '@/ds/Button';
-import Text from '@/ds/Text';
+import { Flex, Input, Button, Text } from '@/ds';
 import Heading from '@/ds/Heading/Heading';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { GameConfig } from '../../types';

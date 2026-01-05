@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { GameType, PlayerAssignment } from '../../types';
-import Box from '@/ds/Box/Box';
-import Heading from '@/ds/Heading';
+import { Box, Heading } from '@/ds';
 
 type CourtProps = {
   courtId: number;

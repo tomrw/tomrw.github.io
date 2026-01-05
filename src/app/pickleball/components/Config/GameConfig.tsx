@@ -1,5 +1,4 @@
-import Button from '@/ds/Button';
-import Flex from '@/ds/Flex';
+import { Button, Flex } from '@/ds';
 import AssignmentsPanel from './AssignmentsPanel';
 import PlayersPanel from './PlayersPanel';
 import { useState } from 'react';

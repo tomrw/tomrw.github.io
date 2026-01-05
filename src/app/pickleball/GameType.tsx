@@ -2,9 +2,7 @@
 
 import { useController, useFormContext } from 'react-hook-form';
 import { GameConfig } from './types';
-import Box from '@/ds/Box';
-import Heading from '@/ds/Heading';
-import Flex from '@/ds/Flex';
+import { Box, Heading, Flex } from '@/ds';
 
 export const GameType = () => {
   const { control } = useFormContext<GameConfig>();

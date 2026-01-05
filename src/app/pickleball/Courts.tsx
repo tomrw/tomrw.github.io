@@ -1,4 +1,4 @@
-import Dropdown from '@/ds/dropdown';
+import { Dropdown } from '@/ds';
 import { useController, useFormContext } from 'react-hook-form';
 import { GameConfig } from './types';
 

@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { usePickleballContext } from '../../PickleballContext';
-import Box from '@/ds/Box/Box';
+import { Box } from '@/ds';
 import Court from './Court';
 import PlayerSelectionDropdown from './PlayerSelectionDropdown';
 import { ReactNode } from 'react';

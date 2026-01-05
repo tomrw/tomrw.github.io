@@ -2,11 +2,7 @@
 
 import { useEffect, useRef, useState, useMemo, useCallback, useLayoutEffect } from 'react';
 import { usePickleballContext } from '../../PickleballContext';
-import Box from '@/ds/Box';
-import Button from '@/ds/Button';
-import Flex from '@/ds/Flex';
-import Input from '@/ds/Input';
-import Heading from '@/ds/Heading';
+import { Box, Button, Flex, Input, Heading } from '@/ds';
 import { usePlayersContext } from '../../contexts/PlayersContext';
 
 type Props = {

@@ -2,8 +2,7 @@
 
 import PickleballContextProvider from './PickleballContext';
 import PlayersProvider from './contexts/PlayersContext';
-import Flex from '@/ds/Flex';
-import Heading from '@/ds/Heading';
+import { Flex, Heading } from '@/ds';
 import CourtGrid from './components/Courts/CourtGrid';
 import GameConfig from './components/Config/GameConfig';
 import CountdownTimer from './components/CountdownTimer';

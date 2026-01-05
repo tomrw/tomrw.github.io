@@ -3,12 +3,7 @@
 import { useState } from 'react';
 import { usePlayersContext } from '../../contexts/PlayersContext';
 import { usePickleballContext } from '../../PickleballContext';
-import SidePanel from '@/ds/SidePanel';
-import Button from '@/ds/Button';
-import Flex from '@/ds/Flex';
-import Input from '@/ds/Input';
-import Box from '@/ds/Box';
-import Text from '@/ds/Text';
+import { SidePanel, Button, Flex, Input, Box, Text } from '@/ds';
 
 type Props = {
   open: boolean;

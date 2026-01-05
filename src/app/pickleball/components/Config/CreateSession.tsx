@@ -1,6 +1,6 @@
 import { useFormContext, useWatch } from 'react-hook-form';
 import { GameConfig } from '../../types';
-import Button from '@/ds/Button/Button';
+import { Button } from '@/ds';
 
 export default function CreateSession() {
   const { control } = useFormContext<GameConfig>();

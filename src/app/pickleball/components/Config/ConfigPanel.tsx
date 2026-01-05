@@ -1,6 +1,6 @@
 'use client';
 
-import SidePanel from '@/ds/SidePanel';
+import { SidePanel, Flex } from '@/ds';
 import { FormProvider, useForm } from 'react-hook-form';
 import Courts from '../../Courts';
 import { GameConfig } from '../../types';
@@ -9,7 +9,6 @@ import { DEFAULT_GAME_CONFIG } from '../../constants';
 import { GameType } from '../../GameType';
 import GameLength from './GameLength';
 import SessionPlayers from './SessionPlayers';
-import Flex from '@/ds/Flex';
 import { ReactNode } from 'react';
 import CreateSession from './CreateSession';
 

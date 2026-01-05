@@ -2,10 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { GameLength } from '../types';
-import Button from '@/ds/Button';
-import Flex from '@/ds/Flex';
-import Box from '@/ds/Box';
-import Heading from '@/ds/Heading';
+import { Button, Flex, Box, Heading } from '@/ds';
 import { usePickleballContext } from '../PickleballContext';
 
 type TimerState = 'idle' | 'running' | 'paused' | 'completed';
