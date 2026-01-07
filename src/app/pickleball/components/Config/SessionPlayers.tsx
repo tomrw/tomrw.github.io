@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { usePlayersContext } from '../../contexts/PlayersContext';
-import { Flex, Input, Button, Text } from '@/ds';
+import { Button, Flex, Input, Text } from '@/ds';
 import Heading from '@/ds/Heading/Heading';
+import { useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
+import { usePlayersContext } from '../../contexts/PlayersContext';
 import { GameConfig } from '../../types';
 
 type SessionPlayersProps = {
@@ -93,25 +93,38 @@ export default function SessionPlayers({ onPlayersChange }: SessionPlayersProps)
               as="li"
               key={player}
               justifyContent="space-between"
-              alignItems="center"
-              sx={{ py: 1 }}
+              sx={{ py: 1, px: 2, borderRadius: 1 }}
+              onClick={() => togglePlayer(player)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  togglePlayer(player);
+                }
+              }}
+              tabIndex={0}
+              role="option"
+              aria-selected={isPlayerSelected(player)}
             >
               <Flex alignItems="center" gap={2}>
                 <input
                   type="checkbox"
                   checked={isPlayerSelected(player)}
                   onChange={() => togglePlayer(player)}
+                  onClick={(e) => e.stopPropagation()}
                   style={{ cursor: 'pointer' }}
                 />
                 <Text>{player}</Text>
               </Flex>
               {isPlayerSelected(player) && (
                 <Button
-                  onClick={() => removePlayer(player)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removePlayer(player);
+                  }}
                   aria-label={`Remove ${player} from session`}
-                  sx={{ px: 1, py: 0.5, fontSize: '12px', mr: 2 }}
+                  sx={{ px: 1, py: 0.5, fontSize: '12px' }}
                 >
-                  x
+                  ×
                 </Button>
               )}
             </Flex>
